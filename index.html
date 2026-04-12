@@ -5,291 +5,157 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dog Theory Exam — Canton of Zurich</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f0f4f8;color:#1a202c;min-height:100vh}
 
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: #f0f4f8;
-      color: #1a202c;
-      min-height: 100vh;
-    }
+    /* ── HEADER ── */
+    header{background:#2b6cb0;color:white;padding:16px 24px;display:flex;align-items:center;gap:14px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,0.2)}
+    header .logo{font-size:1.8rem}
+    header h1{font-size:1.1rem;font-weight:700;line-height:1.3}
+    header p{font-size:0.75rem;opacity:0.85;margin-top:1px}
 
-    header {
-      background: #2b6cb0;
-      color: white;
-      padding: 20px 24px;
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-    header .logo { font-size: 2rem; }
-    header h1 { font-size: 1.2rem; font-weight: 700; line-height: 1.3; }
-    header p { font-size: 0.8rem; opacity: 0.85; margin-top: 2px; }
+    /* ── NAV TABS ── */
+    nav{background:white;border-bottom:2px solid #e2e8f0;display:flex;justify-content:center;gap:0;position:sticky;top:64px;z-index:99}
+    .tab-btn{padding:14px 28px;border:none;background:none;cursor:pointer;font-size:0.9rem;font-weight:600;color:#718096;border-bottom:3px solid transparent;margin-bottom:-2px;transition:all 0.2s;display:flex;align-items:center;gap:6px}
+    .tab-btn:hover{color:#2b6cb0}
+    .tab-btn.active{color:#2b6cb0;border-bottom-color:#2b6cb0}
+    .tab-btn .badge{background:#e53e3e;color:white;border-radius:99px;padding:1px 6px;font-size:0.7rem;font-weight:700}
 
-    .container { max-width: 720px; margin: 0 auto; padding: 24px 16px; }
+    .container{max-width:760px;margin:0 auto;padding:24px 16px}
+    .screen{display:none}.screen.active{display:block}
 
-    /* --- START SCREEN --- */
-    #start-screen {
-      background: white;
-      border-radius: 12px;
-      padding: 32px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-    }
-    #start-screen h2 { font-size: 1.4rem; margin-bottom: 12px; color: #2b6cb0; }
-    #start-screen p { color: #4a5568; line-height: 1.6; margin-bottom: 10px; }
+    /* ── STUDY ── */
+    .study-intro{background:white;border-radius:12px;padding:20px 24px;margin-bottom:16px;box-shadow:0 1px 6px rgba(0,0,0,0.07)}
+    .study-intro h2{font-size:1.1rem;color:#2b6cb0;margin-bottom:6px}
+    .study-intro p{font-size:0.88rem;color:#4a5568;line-height:1.6}
 
-    .topic-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 10px;
-      margin: 20px 0;
-    }
-    .topic-badge {
-      background: #ebf4ff;
-      border: 1px solid #bee3f8;
-      border-radius: 8px;
-      padding: 10px 12px;
-      font-size: 0.82rem;
-      color: #2c5282;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .topic-badge .icon { font-size: 1.1rem; }
+    .chapter{background:white;border-radius:12px;box-shadow:0 1px 6px rgba(0,0,0,0.07);margin-bottom:12px;overflow:hidden}
+    .chapter-header{display:flex;align-items:center;gap:12px;padding:16px 20px;cursor:pointer;user-select:none;transition:background 0.15s}
+    .chapter-header:hover{background:#f7fafc}
+    .chapter-icon{font-size:1.4rem;flex-shrink:0}
+    .chapter-title{flex:1}
+    .chapter-title h3{font-size:0.97rem;font-weight:700;color:#1a202c}
+    .chapter-title p{font-size:0.78rem;color:#718096;margin-top:2px}
+    .chapter-arrow{color:#a0aec0;font-size:0.9rem;transition:transform 0.25s}
+    .chapter.open .chapter-arrow{transform:rotate(90deg)}
+    .chapter-body{display:none;padding:0 20px 20px;border-top:1px solid #f0f4f8}
+    .chapter.open .chapter-body{display:block}
 
-    .filter-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin: 18px 0;
-      align-items: center;
-    }
-    .filter-row label { font-size: 0.85rem; color: #4a5568; font-weight: 500; }
-    .filter-btn {
-      padding: 6px 14px;
-      border-radius: 20px;
-      border: 1px solid #cbd5e0;
-      background: white;
-      font-size: 0.82rem;
-      cursor: pointer;
-      transition: all 0.15s;
-    }
-    .filter-btn.active { background: #2b6cb0; color: white; border-color: #2b6cb0; }
-    .filter-btn:hover:not(.active) { background: #edf2f7; }
+    .section{margin-top:16px}
+    .section h4{font-size:0.82rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:#4a5568;margin-bottom:8px;padding-bottom:4px;border-bottom:1px solid #e2e8f0}
+    .section p{font-size:0.88rem;line-height:1.7;color:#2d3748;margin-bottom:8px}
+    .section ul{padding-left:18px;margin-bottom:8px}
+    .section ul li{font-size:0.88rem;line-height:1.7;color:#2d3748;margin-bottom:2px}
+    .key-fact{background:#ebf8ff;border-left:3px solid #4299e1;border-radius:0 6px 6px 0;padding:10px 12px;margin:10px 0;font-size:0.85rem;line-height:1.6;color:#2c5282}
+    .key-fact strong{display:block;margin-bottom:2px}
+    .warning{background:#fff5f5;border-left:3px solid #fc8181;border-radius:0 6px 6px 0;padding:10px 12px;margin:10px 0;font-size:0.85rem;line-height:1.6;color:#742a2a}
+    .tip{background:#f0fff4;border-left:3px solid #48bb78;border-radius:0 6px 6px 0;padding:10px 12px;margin:10px 0;font-size:0.85rem;line-height:1.6;color:#22543d}
+    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
+    .grid2-item{background:#f7fafc;border-radius:8px;padding:10px 12px}
+    .grid2-item h5{font-size:0.8rem;font-weight:700;color:#2b6cb0;margin-bottom:4px}
+    .grid2-item p{font-size:0.82rem;color:#4a5568;margin:0}
+    @media(max-width:500px){.grid2{grid-template-columns:1fr}}
 
-    .btn-start {
-      width: 100%;
-      padding: 14px;
-      background: #2b6cb0;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.2s;
-      margin-top: 8px;
-    }
-    .btn-start:hover { background: #2c5282; }
+    /* ── QUIZ ── */
+    .quiz-header{background:white;border-radius:12px;padding:24px;box-shadow:0 1px 6px rgba(0,0,0,0.07);margin-bottom:16px}
+    .quiz-header h2{font-size:1.1rem;color:#2b6cb0;margin-bottom:6px}
+    .quiz-header p{font-size:0.88rem;color:#4a5568;line-height:1.6;margin-bottom:14px}
+    .filter-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;align-items:center}
+    .filter-row label{font-size:0.82rem;color:#4a5568;font-weight:600}
+    .filter-btn{padding:5px 12px;border-radius:20px;border:1.5px solid #cbd5e0;background:white;font-size:0.8rem;cursor:pointer;transition:all 0.15s}
+    .filter-btn.active{background:#2b6cb0;color:white;border-color:#2b6cb0}
+    .filter-btn:hover:not(.active){background:#edf2f7}
+    .btn-start{width:100%;padding:13px;background:#2b6cb0;color:white;border:none;border-radius:8px;font-size:0.95rem;font-weight:600;cursor:pointer;transition:background 0.2s}
+    .btn-start:hover{background:#2c5282}
 
-    /* --- QUIZ SCREEN --- */
-    #quiz-screen { display: none; }
+    #quiz-active{display:none}
+    .progress-bar-wrap{background:#e2e8f0;border-radius:99px;height:6px;margin-bottom:18px;overflow:hidden}
+    .progress-bar-fill{height:100%;background:#2b6cb0;border-radius:99px;transition:width 0.3s}
+    .meta-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;font-size:0.82rem;color:#718096}
+    .category-tag{display:inline-flex;align-items:center;gap:5px;background:#ebf4ff;color:#2c5282;border-radius:99px;padding:3px 10px;font-size:0.75rem;font-weight:600}
+    .question-card{background:white;border-radius:12px;padding:24px;box-shadow:0 1px 6px rgba(0,0,0,0.07);margin-bottom:14px}
+    .question-text{font-size:1rem;font-weight:600;line-height:1.5;margin-bottom:20px;color:#1a202c}
+    .options-list{display:flex;flex-direction:column;gap:9px}
+    .option-btn{display:flex;align-items:flex-start;gap:11px;padding:11px 14px;border:2px solid #e2e8f0;border-radius:8px;background:white;cursor:pointer;text-align:left;font-size:0.9rem;line-height:1.45;transition:all 0.15s;color:#1a202c}
+    .option-btn:hover:not(:disabled){border-color:#90cdf4;background:#ebf8ff}
+    .option-btn .letter{min-width:24px;height:24px;border-radius:50%;background:#edf2f7;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.75rem;color:#4a5568;flex-shrink:0;margin-top:1px}
+    .option-btn.correct{border-color:#48bb78;background:#f0fff4}
+    .option-btn.correct .letter{background:#48bb78;color:white}
+    .option-btn.wrong{border-color:#fc8181;background:#fff5f5}
+    .option-btn.wrong .letter{background:#fc8181;color:white}
+    .option-btn.reveal{border-color:#48bb78;background:#f0fff4;opacity:0.7}
+    .option-btn.reveal .letter{background:#48bb78;color:white}
+    .option-btn:disabled{cursor:default}
+    .explanation-box{background:#f7fafc;border-left:4px solid #4299e1;border-radius:0 8px 8px 0;padding:12px 14px;font-size:0.86rem;line-height:1.6;color:#2d3748;margin-top:12px;display:none}
+    .explanation-box.show{display:block}
+    .nav-row{display:flex;justify-content:space-between;align-items:center}
+    .btn-next{padding:10px 22px;background:#2b6cb0;color:white;border:none;border-radius:8px;font-size:0.88rem;font-weight:600;cursor:pointer;transition:background 0.2s;display:none}
+    .btn-next:hover{background:#2c5282}
+    .btn-next.show{display:block}
+    .btn-quit{padding:10px 16px;background:none;color:#a0aec0;border:none;font-size:0.85rem;cursor:pointer}
+    .btn-quit:hover{color:#718096}
 
-    .progress-bar-wrap {
-      background: #e2e8f0;
-      border-radius: 99px;
-      height: 6px;
-      margin-bottom: 20px;
-      overflow: hidden;
-    }
-    .progress-bar-fill {
-      height: 100%;
-      background: #2b6cb0;
-      border-radius: 99px;
-      transition: width 0.3s;
-    }
+    /* ── RESULTS (inline after quiz) ── */
+    .results-card{background:white;border-radius:12px;padding:32px;box-shadow:0 1px 6px rgba(0,0,0,0.07);text-align:center}
+    .score-circle{width:110px;height:110px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 18px;font-weight:800}
+    .score-circle .pct{font-size:1.8rem;line-height:1}
+    .score-circle .lbl{font-size:0.68rem;font-weight:600;opacity:0.8;margin-top:2px}
+    .pass{background:#c6f6d5;color:#22543d;border:4px solid #48bb78}
+    .fail{background:#fed7d7;color:#742a2a;border:4px solid #fc8181}
+    .results-card h2{font-size:1.3rem;margin-bottom:6px}
+    .results-card .sub{color:#718096;font-size:0.88rem;margin-bottom:20px}
+    .breakdown{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px;margin:16px 0;text-align:left}
+    .breakdown-item{background:#f7fafc;border-radius:8px;padding:10px 12px}
+    .breakdown-item .cat{font-size:0.72rem;color:#718096;margin-bottom:3px}
+    .breakdown-item .sc{font-size:0.95rem;font-weight:700}
+    .sc-g{color:#276749}.sc-b{color:#c53030}
+    .btn-restart{padding:11px 28px;background:#2b6cb0;color:white;border:none;border-radius:8px;font-size:0.9rem;font-weight:600;cursor:pointer;transition:background 0.2s}
+    .btn-restart:hover{background:#2c5282}
+    .review-list{text-align:left;margin-top:22px}
+    .review-list h3{font-size:0.9rem;margin-bottom:10px;color:#4a5568}
+    .review-item{border:1px solid #e2e8f0;border-radius:8px;padding:11px 13px;margin-bottom:7px;font-size:0.83rem}
+    .review-item .q{font-weight:600;margin-bottom:4px}
+    .ans-row{display:flex;gap:7px;flex-wrap:wrap;margin-top:4px}
+    .tag{padding:2px 7px;border-radius:4px;font-size:0.73rem;font-weight:600}
+    .tag.c{background:#c6f6d5;color:#22543d}
+    .tag.w{background:#fed7d7;color:#742a2a}
 
-    .meta-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 16px;
-      font-size: 0.82rem;
-      color: #718096;
-    }
-    .category-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      background: #ebf4ff;
-      color: #2c5282;
-      border-radius: 99px;
-      padding: 3px 10px;
-      font-size: 0.75rem;
-      font-weight: 600;
-    }
+    /* ── PROGRESS ── */
+    .progress-screen .empty{background:white;border-radius:12px;padding:40px;text-align:center;box-shadow:0 1px 6px rgba(0,0,0,0.07);color:#718096}
+    .progress-screen .empty .icon{font-size:3rem;margin-bottom:12px}
+    .progress-screen .empty p{font-size:0.9rem;line-height:1.6}
+    .prog-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+    .prog-card{background:white;border-radius:12px;padding:18px;box-shadow:0 1px 6px rgba(0,0,0,0.07);text-align:center}
+    .prog-card .num{font-size:1.8rem;font-weight:800;color:#2b6cb0}
+    .prog-card .lab{font-size:0.75rem;color:#718096;margin-top:2px}
+    @media(max-width:480px){.prog-summary{grid-template-columns:repeat(3,1fr);gap:8px}.prog-card{padding:12px}.prog-card .num{font-size:1.4rem}}
 
-    .question-card {
-      background: white;
-      border-radius: 12px;
-      padding: 28px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-      margin-bottom: 16px;
-    }
-    .question-text {
-      font-size: 1.05rem;
-      font-weight: 600;
-      line-height: 1.5;
-      margin-bottom: 22px;
-      color: #1a202c;
-    }
+    .topic-perf{background:white;border-radius:12px;padding:20px;box-shadow:0 1px 6px rgba(0,0,0,0.07);margin-bottom:16px}
+    .topic-perf h3{font-size:0.95rem;font-weight:700;color:#1a202c;margin-bottom:14px}
+    .perf-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+    .perf-label{font-size:0.8rem;color:#2d3748;width:180px;flex-shrink:0}
+    .perf-bar-bg{flex:1;background:#e2e8f0;border-radius:99px;height:8px;overflow:hidden}
+    .perf-bar-fill{height:100%;border-radius:99px;transition:width 0.4s}
+    .perf-pct{font-size:0.78rem;font-weight:700;width:38px;text-align:right;flex-shrink:0}
+    @media(max-width:480px){.perf-label{width:120px;font-size:0.72rem}}
 
-    .options-list { display: flex; flex-direction: column; gap: 10px; }
-    .option-btn {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      padding: 12px 16px;
-      border: 2px solid #e2e8f0;
-      border-radius: 8px;
-      background: white;
-      cursor: pointer;
-      text-align: left;
-      font-size: 0.92rem;
-      line-height: 1.45;
-      transition: all 0.15s;
-      color: #1a202c;
-    }
-    .option-btn:hover:not(:disabled) { border-color: #90cdf4; background: #ebf8ff; }
-    .option-btn .letter {
-      min-width: 26px;
-      height: 26px;
-      border-radius: 50%;
-      background: #edf2f7;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      font-size: 0.78rem;
-      color: #4a5568;
-      flex-shrink: 0;
-      margin-top: 1px;
-    }
-    .option-btn.correct { border-color: #48bb78; background: #f0fff4; }
-    .option-btn.correct .letter { background: #48bb78; color: white; }
-    .option-btn.wrong { border-color: #fc8181; background: #fff5f5; }
-    .option-btn.wrong .letter { background: #fc8181; color: white; }
-    .option-btn.reveal { border-color: #48bb78; background: #f0fff4; opacity: 0.75; }
-    .option-btn.reveal .letter { background: #48bb78; color: white; }
-    .option-btn:disabled { cursor: default; }
+    .history-list{background:white;border-radius:12px;padding:20px;box-shadow:0 1px 6px rgba(0,0,0,0.07);margin-bottom:16px}
+    .history-list h3{font-size:0.95rem;font-weight:700;margin-bottom:12px}
+    .hist-item{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid #f0f4f8;font-size:0.84rem}
+    .hist-item:last-child{border-bottom:none}
+    .hist-date{color:#718096;font-size:0.78rem}
+    .hist-score{font-weight:700;padding:2px 10px;border-radius:99px;font-size:0.82rem}
+    .hist-pass{background:#c6f6d5;color:#22543d}
+    .hist-fail{background:#fed7d7;color:#742a2a}
 
-    .explanation-box {
-      background: #f7fafc;
-      border-left: 4px solid #4299e1;
-      border-radius: 0 8px 8px 0;
-      padding: 14px 16px;
-      font-size: 0.88rem;
-      line-height: 1.6;
-      color: #2d3748;
-      margin-top: 14px;
-      display: none;
-    }
-    .explanation-box.show { display: block; }
-
-    .nav-row {
-      display: flex;
-      justify-content: flex-end;
-      gap: 10px;
-      margin-top: 4px;
-    }
-    .btn-next {
-      padding: 10px 24px;
-      background: #2b6cb0;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 0.9rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.2s;
-      display: none;
-    }
-    .btn-next:hover { background: #2c5282; }
-    .btn-next.show { display: block; }
-
-    /* --- RESULTS SCREEN --- */
-    #results-screen { display: none; }
-    .results-card {
-      background: white;
-      border-radius: 12px;
-      padding: 36px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-      text-align: center;
-    }
-    .score-circle {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 20px;
-      font-weight: 800;
-    }
-    .score-circle .pct { font-size: 2rem; line-height: 1; }
-    .score-circle .lbl { font-size: 0.72rem; font-weight: 600; opacity: 0.8; margin-top: 2px; }
-    .pass { background: #c6f6d5; color: #22543d; border: 4px solid #48bb78; }
-    .fail { background: #fed7d7; color: #742a2a; border: 4px solid #fc8181; }
-
-    .results-card h2 { font-size: 1.4rem; margin-bottom: 8px; }
-    .results-card .sub { color: #718096; font-size: 0.9rem; margin-bottom: 24px; }
-
-    .breakdown {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-      gap: 10px;
-      margin: 20px 0;
-    }
-    .breakdown-item {
-      background: #f7fafc;
-      border-radius: 8px;
-      padding: 12px;
-      text-align: left;
-    }
-    .breakdown-item .cat { font-size: 0.75rem; color: #718096; margin-bottom: 4px; }
-    .breakdown-item .score { font-size: 1rem; font-weight: 700; }
-    .score-g { color: #276749; }
-    .score-b { color: #c53030; }
-
-    .btn-restart {
-      padding: 12px 32px;
-      background: #2b6cb0;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 0.95rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.2s;
-      margin-top: 8px;
-    }
-    .btn-restart:hover { background: #2c5282; }
-
-    .review-list { text-align: left; margin-top: 24px; }
-    .review-list h3 { font-size: 0.95rem; margin-bottom: 12px; color: #4a5568; }
-    .review-item {
-      border: 1px solid #e2e8f0;
-      border-radius: 8px;
-      padding: 12px 14px;
-      margin-bottom: 8px;
-      font-size: 0.85rem;
-    }
-    .review-item .q { font-weight: 600; margin-bottom: 4px; }
-    .review-item .ans-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
-    .tag { padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; }
-    .tag.c { background: #c6f6d5; color: #22543d; }
-    .tag.w { background: #fed7d7; color: #742a2a; }
+    .weak-topics{background:white;border-radius:12px;padding:20px;box-shadow:0 1px 6px rgba(0,0,0,0.07);margin-bottom:16px}
+    .weak-topics h3{font-size:0.95rem;font-weight:700;margin-bottom:12px}
+    .weak-item{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:#fff5f5;border-radius:8px;margin-bottom:8px}
+    .weak-item .wi-left{display:flex;align-items:center;gap:8px;font-size:0.85rem;font-weight:600;color:#742a2a}
+    .weak-item .wi-score{font-size:0.8rem;color:#c53030;font-weight:700}
+    .btn-study-weak{padding:5px 12px;background:#2b6cb0;color:white;border:none;border-radius:6px;font-size:0.78rem;font-weight:600;cursor:pointer}
+    .btn-clear{display:block;margin:0 auto;padding:9px 20px;background:none;border:1.5px solid #fc8181;color:#c53030;border-radius:8px;font-size:0.83rem;font-weight:600;cursor:pointer;margin-top:4px}
+    .btn-clear:hover{background:#fff5f5}
   </style>
 </head>
 <body>
@@ -298,682 +164,817 @@
   <div class="logo">🐕</div>
   <div>
     <h1>Dog Theory Exam — Canton of Zurich</h1>
-    <p>Practice questions based on the official study guide</p>
+    <p>Study · Practice · Track your progress</p>
   </div>
 </header>
 
+<nav>
+  <button class="tab-btn active" onclick="switchTab('study')">📖 Study</button>
+  <button class="tab-btn" onclick="switchTab('quiz')">✏️ Quiz</button>
+  <button class="tab-btn" id="tab-progress" onclick="switchTab('progress')">📊 Progress</button>
+</nav>
+
 <div class="container">
 
-  <!-- START SCREEN -->
-  <div id="start-screen">
-    <h2>Ready to practise?</h2>
-    <p>Since 1 June 2025, the dog theory exam is mandatory in the Canton of Zurich. Practise here with questions from all exam topics.</p>
+  <!-- ════════════════════════════════════════════ STUDY ════ -->
+  <div id="screen-study" class="screen active">
 
-    <div class="topic-grid" id="topic-grid"></div>
-
-    <div class="filter-row">
-      <label>Topic:</label>
-      <button class="filter-btn active" data-topic="all">All Topics</button>
+    <div class="study-intro">
+      <h2>Official Study Guide — Canton of Zurich</h2>
+      <p>All exam topics summarised from the official booklet published by the Veterinary Office of the Canton of Zurich. Click any chapter to expand it.</p>
     </div>
 
-    <button class="btn-start" onclick="startQuiz()">Start Exam</button>
-  </div>
-
-  <!-- QUIZ SCREEN -->
-  <div id="quiz-screen">
-    <div class="progress-bar-wrap">
-      <div class="progress-bar-fill" id="progress-bar"></div>
-    </div>
-    <div class="meta-row">
-      <span class="category-tag" id="category-tag"></span>
-      <span id="question-counter"></span>
-    </div>
-    <div class="question-card">
-      <div class="question-text" id="question-text"></div>
-      <div class="options-list" id="options-list"></div>
-      <div class="explanation-box" id="explanation-box"></div>
-    </div>
-    <div class="nav-row">
-      <button class="btn-next" id="btn-next" onclick="nextQuestion()">Next Question →</button>
-    </div>
-  </div>
-
-  <!-- RESULTS SCREEN -->
-  <div id="results-screen">
-    <div class="results-card">
-      <div class="score-circle" id="score-circle">
-        <span class="pct" id="score-pct"></span>
-        <span class="lbl">SCORE</span>
+    <!-- CH 1 -->
+    <div class="chapter" id="ch1">
+      <div class="chapter-header" onclick="toggleChapter('ch1')">
+        <div class="chapter-icon">👁️</div>
+        <div class="chapter-title"><h3>A Dog's Senses</h3><p>Sight, hearing, smell, touch & taste</p></div>
+        <span class="chapter-arrow">▶</span>
       </div>
-      <h2 id="result-title"></h2>
-      <p class="sub" id="result-sub"></p>
-      <div class="breakdown" id="breakdown"></div>
-      <button class="btn-restart" onclick="restart()">Try Again</button>
-      <div class="review-list" id="review-list"></div>
+      <div class="chapter-body">
+        <div class="section">
+          <h4>Sight</h4>
+          <p>Dogs' visual acuity is <strong>3–4 times worse</strong> than humans. Objects closer than 30–50 cm appear blurry. Dogs perceive <strong>movement far better</strong> than humans and can detect small movements at almost <strong>1 kilometre</strong>. They also see better than humans at dusk, but equally poorly in complete darkness.</p>
+          <div class="key-fact"><strong>Field of vision</strong>Because dogs' eyes are on the sides of their head, they have a wider field of vision than humans. Long hair covering the eyes significantly impairs vision — keeping it trimmed is important.</div>
+          <p><strong>Colour:</strong> Dogs are <strong>red-green colourblind</strong> (they lack the cone cells for red). A blue ball in green grass is much easier for them to see than a red one.</p>
+        </div>
+        <div class="section">
+          <h4>Hearing</h4>
+          <p>Dogs hear in a much wider frequency range than humans. Some sources report up to <strong>65,000 Hz</strong> (humans hear up to ~14,000 Hz). They are especially sensitive to <strong>high frequencies</strong> and can hear sounds in the ultrasonic range. They can also move their outer ears independently to locate sounds.</p>
+          <div class="warning">Dog owners must be aware that dogs hear household appliances, traffic, fireworks, and TV much more intensely than humans — this can cause excitement or fear reactions.</div>
+        </div>
+        <div class="section">
+          <h4>Smell</h4>
+          <p>The sense of smell is every dog's superpower. Dogs have <strong>125–300 million olfactory cells</strong> (humans have 5–10 million) and their olfactory mucous membranes are <strong>20 times thicker</strong>. Unlike other senses, a dog's sense of smell continues to develop throughout its life and can be improved through training.</p>
+          <div class="key-fact"><strong>The Vomeronasal Organ (Jacobson's Organ)</strong>A "second nose" located in the palate behind the upper incisors. It explains why dogs sometimes lick a spot, then chatter their teeth or drool — they are processing smells through this organ.</div>
+        </div>
+        <div class="section">
+          <h4>Touch</h4>
+          <p>Touch plays an important <strong>social and emotional role</strong>. Physical contact is emotionally significant for dogs — closeness and pleasant touch play a key role in forming bonds. Dogs also have <strong>vibrissae</strong> (tactile hairs) around their snout and above their eyes that act as a tactile organ and aid communication.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CH 2 -->
+    <div class="chapter" id="ch2">
+      <div class="chapter-header" onclick="toggleChapter('ch2')">
+        <div class="chapter-icon">💤</div>
+        <div class="chapter-title"><h3>A Dog's Needs</h3><p>Sleep, exercise, social contact & mental stimulation</p></div>
+        <span class="chapter-arrow">▶</span>
+      </div>
+      <div class="chapter-body">
+        <div class="section">
+          <h4>Sleep & Rest</h4>
+          <p>Dogs have a much greater need for sleep and rest than humans. In the wild, dogs rest and sleep for around <strong>17 hours a day</strong>. Puppies and sick or old dogs can sleep up to <strong>20 hours</strong>. After exciting activities, dogs need more rest. A protected resting place, shielded from stimuli, is essential.</p>
+        </div>
+        <div class="section">
+          <h4>Exercise</h4>
+          <p>Dogs need adequate daily outdoor exercise. Walks should include plenty of time to sniff, explore and wander. The amount of exercise depends on the breed, age, and health of the dog. Where possible, dogs should be able to run freely off-lead.</p>
+          <div class="tip">Familiar walking routes give dogs a sense of security. New environments encourage exploration but can also increase excitement and tension.</div>
+        </div>
+        <div class="section">
+          <h4>Social Needs</h4>
+          <p>A dog's most important social partners are its humans. Dogs need daily closeness, physical contact, play and shared activities to build trust. An important training goal is that dogs can <strong>walk past unfamiliar dogs in a relaxed manner</strong> — dogs do not need to greet every dog and are often overwhelmed when they do.</p>
+          <div class="key-fact"><strong>Note on greetings</strong>Owners can talk to each other to find out whether their dogs are a good fit. Many dogs find contact with unfamiliar dogs stressful — always respect their need for space.</div>
+        </div>
+        <div class="section">
+          <h4>Mental Stimulation</h4>
+          <p>Dogs are intelligent and need mental challenges. Good options include: nose work, tracking, trick training, agility, and search games. <strong>Less is often more</strong> — short, frequent sessions are better than long, infrequent ones.</p>
+        </div>
+        <div class="section">
+          <h4>Food & Water</h4>
+          <p>Dogs must always have access to <strong>fresh water</strong>. Food should be tailored to the individual dog's age, size, health, and activity level. First-time owners should seek expert nutritional advice. Feeding table scraps is not advisable — they are often too fatty or seasoned, or even harmful.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CH 3 -->
+    <div class="chapter" id="ch3">
+      <div class="chapter-header" onclick="toggleChapter('ch3')">
+        <div class="chapter-icon">🐾</div>
+        <div class="chapter-title"><h3>Behavioural Development</h3><p>Puppy stages, socialisation & adolescence</p></div>
+        <span class="chapter-arrow">▶</span>
+      </div>
+      <div class="chapter-body">
+        <div class="section">
+          <h4>Developmental Stages at a Glance</h4>
+          <div class="grid2">
+            <div class="grid2-item"><h5>Puppy Period</h5><p>Birth to 16 weeks</p></div>
+            <div class="grid2-item"><h5>Adolescent Period</h5><p>16 weeks → social maturity (18–48 months)</p></div>
+            <div class="grid2-item"><h5>Adult Period</h5><p>Social maturity → ~7–12 years</p></div>
+            <div class="grid2-item"><h5>Senior Period</h5><p>~7–12 years → end of life</p></div>
+          </div>
+        </div>
+        <div class="section">
+          <h4>The Socialisation Period (4–12/14 weeks)</h4>
+          <p>This is the most critical period. <strong>Socialisation</strong> means getting to know different social partners (people, other dogs, animals) so the puppy learns to classify them positively. Emotional experiences during this time have a <strong>lifelong impact</strong>.</p>
+          <div class="key-fact"><strong>Habituation to stimuli</strong>Puppies should be carefully exposed to: everyday noises (traffic, appliances), sudden loud noises (thunder, fireworks), visual stimuli, different floor surfaces, car travel, etc.</div>
+          <div class="warning"><strong>Overwhelming is harmful!</strong> New impressions that are too loud, too big, too close, or too intense can cause lasting anxiety. The motto is "less is more".</div>
+        </div>
+        <div class="section">
+          <h4>Adolescent Period (~16 weeks – 48 months)</h4>
+          <p>The adolescent period begins with puberty and ends at social maturity. The <strong>cerebrum</strong> (responsible for attention, emotional regulation and impulse control) is still developing. This is why adolescent dogs may:</p>
+          <ul>
+            <li>React more quickly to stimuli</li>
+            <li>Have difficulty concentrating</li>
+            <li>Become more independent</li>
+            <li>React more emotionally</li>
+          </ul>
+          <div class="tip">Adolescent dogs are not being "disrespectful" — they are simply often unable to do what is asked of them. Consistent routines, clear rules, and patience are key.</div>
+          <p>Small breeds develop faster than large breeds. Social maturity can take up to <strong>48 months</strong> in large breeds.</p>
+        </div>
+        <div class="section">
+          <h4>House Training</h4>
+          <p>Newborn puppies cannot control their bladder. It can take <strong>weeks or even months</strong> for this to develop. Puppies should be taken outside quickly and frequently to a low-stimulus toilet area to learn to relieve themselves outdoors.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CH 4 -->
+    <div class="chapter" id="ch4">
+      <div class="chapter-header" onclick="toggleChapter('ch4')">
+        <div class="chapter-icon">🐕</div>
+        <div class="chapter-title"><h3>Dog Body Language</h3><p>Reading postures, signals & emotions</p></div>
+        <span class="chapter-arrow">▶</span>
+      </div>
+      <div class="chapter-body">
+        <div class="section">
+          <h4>Why Body Language Matters</h4>
+          <p>Dogs communicate mainly through body language, but also through smell, touch and vocalisation. Always observe the <strong>whole dog</strong> (from nose tip to tail) — looking only at individual body parts risks misinterpretation. Signals can change in a flash.</p>
+        </div>
+        <div class="section">
+          <h4>The Four Basic Types</h4>
+          <div class="grid2">
+            <div class="grid2-item"><h5>😌 Neutral</h5><p>Balanced centre of gravity, soft muscles, relaxed mouth, gentle gaze, tail in neutral position</p></div>
+            <div class="grid2-item"><h5>👀 Alert</h5><p>Weight slightly forward, more body tension, focused gaze, ears forward, tail slightly higher</p></div>
+            <div class="grid2-item"><h5>😨 Fearful</h5><p>Weight shifted back, crouching/smaller, mouth closed/lips back, averted gaze, ears back, tail tucked</p></div>
+            <div class="grid2-item"><h5>😠 Aggressive</h5><p>Offensive: weight forward, very tense, stiff, staring, ears forward. Defensive: weight back, tense, ears back, tail stiff or tucked</p></div>
+          </div>
+        </div>
+        <div class="section">
+          <h4>Breed Differences & Communication Limits</h4>
+          <p>Over 350 breeds recognised by the FCI have developed very different body shapes. Tail positions differ greatly between types:</p>
+          <ul>
+            <li>Shepherd-type dogs carry tails low → does NOT always mean fear</li>
+            <li>Spitz-type dogs carry tails curled over back → does NOT always mean dominance</li>
+            <li>Terrier-type dogs carry tails high</li>
+          </ul>
+          <div class="warning"><strong>Communication-limited breeds:</strong> Pugs, Bulldogs, and French Bulldogs have no or very short tails and flat faces — making it hard for both humans and other dogs to read their body language. Long-haired dogs like Briards also have restricted communication.</div>
+        </div>
+        <div class="section">
+          <h4>Calming Signals</h4>
+          <p>Calming signals are de-escalating, friendly social gestures. They serve to signal friendliness and defuse situations. Examples: yawning, nose licking, turning the head away, blinking, sniffing the ground.</p>
+        </div>
+        <div class="section">
+          <h4>Stress Signals</h4>
+          <p><strong>Mild stress:</strong> More frequent yawning, nose licking, panting (not from heat), ears pulled back, increased body tension, scratching, biting the lead, jumping up.</p>
+          <p><strong>Severe stress:</strong> Poor responsiveness, very tense body, unable to accept food, sweaty paw pads (dogs only sweat through paws), trembling, vomiting, diarrhoea.</p>
+          <div class="tip">A stressed facial expression = corners of mouth pulled far back (stress lines), tongue hanging out, narrowed or very wide eyes, enlarged pupils, smooth forehead. Often mistaken for a "happy smile"!</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CH 5 -->
+    <div class="chapter" id="ch5">
+      <div class="chapter-header" onclick="toggleChapter('ch5')">
+        <div class="chapter-icon">⚡</div>
+        <div class="chapter-title"><h3>The 4 Fs & Ladder of Aggression</h3><p>Conflict strategies & escalation</p></div>
+        <span class="chapter-arrow">▶</span>
+      </div>
+      <div class="chapter-body">
+        <div class="section">
+          <h4>The Four Conflict Strategies (4 Fs)</h4>
+          <p>Dogs react to threatening situations with four strategies. The strategy can change within milliseconds:</p>
+          <div class="grid2">
+            <div class="grid2-item"><h5>❄️ Freeze</h5><p>The dog suddenly stands completely still. Often mistaken for "stubbornness" — the dog is actually stuck and unable to move forward.</p></div>
+            <div class="grid2-item"><h5>🤪 Fiddle about</h5><p>Exaggerated, frantic clowning around (jumping, biting the lead) to cope with overwhelm. Often mistaken for happiness or play.</p></div>
+            <div class="grid2-item"><h5>🏃 Flight</h5><p>Increasing distance from the threat. Note: on a lead, dogs cannot flee — this restriction can escalate behaviour.</p></div>
+            <div class="grid2-item"><h5>😡 Fight</h5><p>Threatening and/or aggressive behaviour to increase distance. Usually begins with subtle signals before escalating.</p></div>
+          </div>
+        </div>
+        <div class="section">
+          <h4>The Ladder of Aggression</h4>
+          <p>Dogs communicate their discomfort progressively. The ladder shows escalation from subtle signals to violent reactions:</p>
+          <ul>
+            <li><strong>Green zone:</strong> Dog can think clearly, make choices, and learn. Training should stay here.</li>
+            <li><strong>Yellow zone:</strong> Calming signals, avoidance, stiffening, lip curling</li>
+            <li><strong>Orange zone:</strong> Growling, snapping</li>
+            <li><strong>Red zone:</strong> Rational thinking no longer possible — biting</li>
+          </ul>
+          <div class="warning"><strong>Never punish growling!</strong> Growling is an important communication signal. Suppressing it does not remove the problem — it removes the warning, making a bite without warning more likely.</div>
+        </div>
+        <div class="section">
+          <h4>Play vs Hunting vs Aggression</h4>
+          <p><strong>Play signals:</strong> Exaggerated movements, play bow (lowering the forebody), relaxed muscles, alternating roles, regular breaks.</p>
+          <p><strong>Not play anymore:</strong> Excessive chasing (actual hunting behaviour), mounting, pawing, interaction becoming faster and rougher, bullying.</p>
+        </div>
+        <div class="section">
+          <h4>Children & Dogs</h4>
+          <p>Most dog bites involving children occur at home with the family dog. Children may have the best intentions but provoke the dog without realising. <strong>Supervision by an adult who understands dog body language is essential</strong> whenever children and dogs interact.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CH 6 -->
+    <div class="chapter" id="ch6">
+      <div class="chapter-header" onclick="toggleChapter('ch6')">
+        <div class="chapter-icon">🧠</div>
+        <div class="chapter-title"><h3>Learning Theory</h3><p>How dogs learn: conditioning, reinforcement & more</p></div>
+        <span class="chapter-arrow">▶</span>
+      </div>
+      <div class="chapter-body">
+        <div class="section">
+          <h4>Classical Conditioning</h4>
+          <p>A <strong>neutral stimulus</strong> is paired with a positive or negative emotion until the neutral stimulus alone triggers that emotion.</p>
+          <p><em>Example:</em> Whistle → food (repeated many times) → the dog hears the whistle and feels happy, then approaches. If the reward stops for a long period, the signal loses meaning (<strong>extinction</strong>).</p>
+        </div>
+        <div class="section">
+          <h4>Operant Conditioning</h4>
+          <p>The dog's behaviour is shaped by its <strong>consequences</strong>:</p>
+          <div class="grid2">
+            <div class="grid2-item"><h5>✅ Positive Reinforcement</h5><p>Add something pleasant after a desired behaviour → behaviour increases. Most recommended method.</p></div>
+            <div class="grid2-item"><h5>➖ Negative Reinforcement</h5><p>Remove something unpleasant after a desired behaviour → behaviour increases.</p></div>
+            <div class="grid2-item"><h5>❌ Positive Punishment</h5><p>Add something unpleasant after an unwanted behaviour → behaviour decreases. Causes stress and side-effects.</p></div>
+            <div class="grid2-item"><h5>➖ Negative Punishment</h5><p>Remove something pleasant after an unwanted behaviour → behaviour decreases.</p></div>
+          </div>
+        </div>
+        <div class="section">
+          <h4>Habituation & Sensitisation</h4>
+          <p><strong>Habituation:</strong> Getting used to a stimulus through repeated, harmless exposure (e.g. traffic noise). The dog learns the stimulus is irrelevant.</p>
+          <p><strong>Sensitisation:</strong> The opposite — a stimulus becomes more alarming over time because it has been associated with something unpleasant. Overwhelming a puppy during the socialisation period can cause permanent sensitisation.</p>
+        </div>
+        <div class="section">
+          <h4>Social Learning</h4>
+          <p>Dogs can also learn by <strong>observing other dogs or humans</strong>. Puppies in particular learn from watching calm, experienced dogs — this is why an owner modelling calm behaviour helps puppies relax.</p>
+        </div>
+        <div class="section">
+          <h4>Generalisation</h4>
+          <p>A behaviour learned in one context does not automatically transfer to another. Dogs must practise in <strong>many different environments and situations</strong> for a command to become reliable.</p>
+        </div>
+        <div class="section">
+          <h4>Training Principles</h4>
+          <ul>
+            <li>Short, frequent sessions are better than long, infrequent ones</li>
+            <li>Training should be fun — reward-based and motivating</li>
+            <li>Behaviour that is reinforced (even accidentally) will increase</li>
+            <li>Timing of reward is crucial — it must follow the behaviour immediately</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- CH 7 -->
+    <div class="chapter" id="ch7">
+      <div class="chapter-header" onclick="toggleChapter('ch7')">
+        <div class="chapter-icon">🏠</div>
+        <div class="chapter-title"><h3>Housing & Daily Life</h3><p>Legal requirements for keeping dogs</p></div>
+        <span class="chapter-arrow">▶</span>
+      </div>
+      <div class="chapter-body">
+        <div class="section">
+          <h4>Running Chain (Tether)</h4>
+          <ul>
+            <li>Dogs must have <strong>at least 5 hours</strong> of free movement per day</li>
+            <li>The running chain must <strong>not</strong> be attached to a slip collar</li>
+            <li>Dogs must be able to move in an area of at least <strong>20 m²</strong></li>
+            <li>Chain must not wind up or get caught</li>
+            <li>Outdoor dogs must have shelter and a raised lying area</li>
+          </ul>
+        </div>
+        <div class="section">
+          <h4>Kennels & Crates</h4>
+          <ul>
+            <li>A dog alone in a kennel/crate with less than 5 hours of daily human/dog contact may only be kept that way for a <strong>maximum of 3 months</strong></li>
+            <li>After 3 months, it needs visual, auditory & olfactory contact with another dog</li>
+            <li>Every dog needs its own retreat space</li>
+            <li>Lying areas must be <strong>elevated</strong> and easy to keep clean and dry</li>
+            <li>Floors must not be perforated</li>
+          </ul>
+        </div>
+        <div class="section">
+          <h4>Travel Crate at Home</h4>
+          <div class="warning">Keeping a dog in a travel crate inside the home is <strong>prohibited</strong>, even for short periods. If the gate is removed, it may be offered as a voluntary retreat.</div>
+        </div>
+        <div class="section">
+          <h4>Lighting & Shelter</h4>
+          <p>Rooms where dogs are kept must have daylight of at least <strong>15 lux</strong> during the day. Outdoor shelters must be dry, protect from wind/rain/cold/heat, and have suitable bedding.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CH 8 -->
+    <div class="chapter" id="ch8">
+      <div class="chapter-header" onclick="toggleChapter('ch8')">
+        <div class="chapter-icon">⚖️</div>
+        <div class="chapter-title"><h3>Law & Legal Requirements</h3><p>Swiss animal welfare law & Canton Zurich dog law</p></div>
+        <span class="chapter-arrow">▶</span>
+      </div>
+      <div class="chapter-body">
+        <div class="section">
+          <h4>Key Laws</h4>
+          <ul>
+            <li><strong>TSchG</strong> — Animal Welfare Act (federal)</li>
+            <li><strong>TSchV</strong> — Animal Protection Ordinance (federal)</li>
+            <li><strong>HuG</strong> — Cantonal Dog Act, Canton Zurich</li>
+            <li><strong>HuV</strong> — Dog Ordinance, Canton Zurich</li>
+          </ul>
+        </div>
+        <div class="section">
+          <h4>Liability Insurance</h4>
+          <div class="key-fact"><strong>Mandatory minimum: CHF 1,000,000</strong> All dog owners in Canton Zurich must have liability insurance covering at least CHF 1 million (Section 6 HuG).</div>
+        </div>
+        <div class="section">
+          <h4>Generally Prohibited Actions (Art. 16 TSchV)</h4>
+          <ul>
+            <li>Killing animals cruelly</li>
+            <li>Organising animal fights</li>
+            <li>Abandoning animals</li>
+            <li>Performing sexual acts with animals</li>
+            <li>Using fencing systems that administer electric shocks via a device attached to the animal</li>
+          </ul>
+        </div>
+        <div class="section">
+          <h4>Prohibited for Dogs Specifically (Art. 22, 28, 70, 76a, 76b TSchV)</h4>
+          <ul>
+            <li><strong>Ear cropping & tail docking for aesthetic reasons</strong> (medical reasons exempt)</li>
+            <li>Destroying the vocal organs</li>
+            <li>Advertising or selling dogs with cropped ears or docked tails</li>
+            <li>Commercial import of puppies under 15 weeks</li>
+            <li>Separating puppies less than <strong>56 days (8 weeks)</strong> from their mother</li>
+            <li>Electric anti-barking devices (even those that emit only water or compressed air)</li>
+            <li>Devices with unpleasant acoustic signals (e.g. Pet Gentle), chemical devices, vibration devices</li>
+          </ul>
+        </div>
+        <div class="section">
+          <h4>Banned Breeds in Canton Zurich</h4>
+          <p>Keeping these breeds is prohibited. Also prohibited: crossbreeds with ≥10% genetic material from a banned breed (up to great-grandparents).</p>
+          <ul>
+            <li>American Staffordshire Terrier</li>
+            <li>Bull Terrier</li>
+            <li>Pit Bull Terrier</li>
+            <li>Staffordshire Bull Terrier</li>
+            <li>Rottweiler</li>
+            <li>American Bully (incl. XXL and Pocket)</li>
+            <li>Swiss Blue Bully / Swiss Champagne Bully</li>
+          </ul>
+        </div>
+        <div class="section">
+          <h4>Duty of Supervision</h4>
+          <p>Dog owners must keep, walk and supervise their dogs so they do not endanger people, animals, or the environment, and do not cause nuisance (Section 9 HuG).</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CH 9 -->
+    <div class="chapter" id="ch9">
+      <div class="chapter-header" onclick="toggleChapter('ch9')">
+        <div class="chapter-icon">📋</div>
+        <div class="chapter-title"><h3>Theory Exam & Practical Training</h3><p>Who must do it, deadlines & what is covered</p></div>
+        <span class="chapter-arrow">▶</span>
+      </div>
+      <div class="chapter-body">
+        <div class="section">
+          <h4>Who Must Take the Theory Exam?</h4>
+          <p>Anyone who has <strong>never owned a dog</strong>, or has <strong>not owned one for more than 10 years</strong>, must complete the theory course and pass the exam.</p>
+        </div>
+        <div class="section">
+          <h4>Deadlines</h4>
+          <div class="grid2">
+            <div class="grid2-item"><h5>Earliest</h5><p>Up to 1 year <em>before</em> acquiring a dog</p></div>
+            <div class="grid2-item"><h5>Latest</h5><p>No later than <strong>2 months after</strong> acquiring the dog</p></div>
+          </div>
+          <p style="margin-top:10px">After passing, the confirmation must be submitted to the municipality <strong>within 3 months</strong> of acquiring the dog.</p>
+        </div>
+        <div class="section">
+          <h4>What the Theory Course Covers</h4>
+          <ul>
+            <li>Legal requirements for dog ownership</li>
+            <li>Dog needs, social behaviour & learning style</li>
+            <li>Use of aids in training</li>
+            <li>Time and financial commitment of dog ownership</li>
+          </ul>
+        </div>
+        <div class="section">
+          <h4>Practical Course</h4>
+          <ul>
+            <li>Mandatory for <strong>all</strong> dog owners in Canton Zurich (regardless of breed or size)</li>
+            <li>Minimum <strong>6 lessons of 60 minutes</strong> each</li>
+            <li>All sessions must be completed within the required period</li>
+            <li>If learning objectives are not achieved, additional lessons must be taken</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- CH 10 -->
+    <div class="chapter" id="ch10">
+      <div class="chapter-header" onclick="toggleChapter('ch10')">
+        <div class="chapter-icon">🗂️</div>
+        <div class="chapter-title"><h3>AMICUS & Registration</h3><p>Microchip, database & deadlines</p></div>
+        <span class="chapter-arrow">▶</span>
+      </div>
+      <div class="chapter-body">
+        <div class="section">
+          <h4>Microchip</h4>
+          <p>All dogs must be microchipped <strong>no later than 3 months after birth</strong>, and in any case before being handed over by the breeder. The microchip always contains a <strong>15-digit number</strong> and is implanted by a vet.</p>
+        </div>
+        <div class="section">
+          <h4>AMICUS Database</h4>
+          <p>AMICUS is the <strong>mandatory national dog database</strong> for Switzerland. It records: owner contact details, dog name, breed, sex, microchip number, pet passport number, and training completed. It documents the entire life history of every dog.</p>
+        </div>
+        <div class="section">
+          <h4>Key Deadlines (Art. 17d TSV)</h4>
+          <ul>
+            <li>Acquiring a dog → register in AMICUS within <strong>10 days</strong></li>
+            <li>Selling/giving away a dog → report within <strong>10 days</strong></li>
+            <li>Dog's death → report within <strong>10 days</strong></li>
+            <li>Transfer abroad → report to municipality within <strong>10 days</strong></li>
+          </ul>
+        </div>
+        <div class="section">
+          <h4>Who Can Change What</h4>
+          <p>Dog owners can update their <strong>email and phone</strong> themselves in AMICUS at any time. Changes to <strong>name and address</strong> can only be made by the <strong>municipality</strong>.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CH 11 -->
+    <div class="chapter" id="ch11">
+      <div class="chapter-header" onclick="toggleChapter('ch11')">
+        <div class="chapter-icon">✈️</div>
+        <div class="chapter-title"><h3>Travelling with Dogs</h3><p>Entering Switzerland & travelling abroad</p></div>
+        <span class="chapter-arrow">▶</span>
+      </div>
+      <div class="chapter-body">
+        <div class="section">
+          <h4>Entering Switzerland — Requirements for All Dogs</h4>
+          <ul>
+            <li>Dog must be <strong>microchipped</strong></li>
+            <li>Valid <strong>rabies vaccination</strong></li>
+          </ul>
+        </div>
+        <div class="section">
+          <h4>By Country of Departure</h4>
+          <div class="grid2">
+            <div class="grid2-item"><h5>🇪🇺 From EU countries</h5><p>Microchip + EU pet passport + valid rabies vaccination</p></div>
+            <div class="grid2-item"><h5>🌍 Low rabies risk countries (e.g. USA, UK, Australia)</h5><p>Microchip + vaccination documents + valid rabies vaccination + veterinary certificate or FSVO import permit</p></div>
+            <div class="grid2-item" style="grid-column:1/-1"><h5>⚠️ Rabies risk countries (e.g. Serbia, Turkey, Morocco, Russia)</h5><p>Microchip + pet passport + valid rabies vaccination + rabies titre test (blood sample ≥30 days after vaccination, waiting period ≥120 days, antibody level ≥0.5 IU/ml) + veterinary certificate or FSVO import permit</p></div>
+          </div>
+        </div>
+        <div class="section">
+          <h4>At the Border</h4>
+          <p>Dogs must be declared to customs when entering. Use the <strong>"red" customs exit</strong> at Zurich or Geneva airports. Direct flights from third countries require an <strong>FSVO import permit</strong> obtained in advance.</p>
+        </div>
+        <div class="section">
+          <h4>Docked Tails & Cropped Ears</h4>
+          <div class="warning">Dogs with docked tails or cropped ears are <strong>generally prohibited from entering Switzerland</strong>. Exceptions: proven medical reasons, or owner relocating to Switzerland. After entry, such dogs must be registered with the Veterinary Office.</div>
+        </div>
+        <div class="section">
+          <h4>Travelling Abroad</h4>
+          <p>Check entry requirements of the destination country <strong>well in advance</strong>. Requirements may include breed bans, specific vaccinations, or lead requirements. In warmer countries, dogs face risks from: babesiosis, ehrlichiosis, leishmaniasis, and heartworms. Consult a vet before travelling.</p>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /screen-study -->
+
+  <!-- ════════════════════════════════════════════ QUIZ ════ -->
+  <div id="screen-quiz" class="screen">
+    <div id="quiz-setup">
+      <div class="quiz-header">
+        <h2>Practice Quiz</h2>
+        <p>Test your knowledge with questions from all exam topics. Select a topic to focus on, or practise everything at once.</p>
+        <div class="filter-row">
+          <label>Topic:</label>
+          <button class="filter-btn active" data-topic="all">All Topics</button>
+        </div>
+        <button class="btn-start" onclick="startQuiz()">Start Quiz</button>
+      </div>
+    </div>
+    <div id="quiz-active">
+      <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progress-bar"></div></div>
+      <div class="meta-row">
+        <span class="category-tag" id="category-tag"></span>
+        <span id="question-counter"></span>
+      </div>
+      <div class="question-card">
+        <div class="question-text" id="question-text"></div>
+        <div class="options-list" id="options-list"></div>
+        <div class="explanation-box" id="explanation-box"></div>
+      </div>
+      <div class="nav-row">
+        <button class="btn-quit" onclick="quitQuiz()">✕ Quit</button>
+        <button class="btn-next" id="btn-next" onclick="nextQuestion()">Next →</button>
+      </div>
+    </div>
+    <div id="quiz-results" style="display:none">
+      <div class="results-card">
+        <div class="score-circle" id="score-circle">
+          <span class="pct" id="score-pct"></span>
+          <span class="lbl">SCORE</span>
+        </div>
+        <h2 id="result-title"></h2>
+        <p class="sub" id="result-sub"></p>
+        <div class="breakdown" id="breakdown"></div>
+        <button class="btn-restart" onclick="restartQuiz()">Try Again</button>
+        <div class="review-list" id="review-list"></div>
+      </div>
     </div>
   </div>
 
-</div>
+  <!-- ════════════════════════════════════════════ PROGRESS ════ -->
+  <div id="screen-progress" class="screen progress-screen">
+    <div id="progress-content"></div>
+  </div>
+
+</div><!-- /container -->
 
 <script>
 const QUESTIONS = [
-  // ── 01 Senses ─────────────────────────────────────────────────────────────
-  {
-    category: "A Dog's Senses",
-    icon: "👁️",
-    q: "How much worse is a dog's visual acuity compared to a human's?",
-    options: ["2 times worse", "3 to 4 times worse", "10 times worse", "About the same"],
-    correct: 1,
-    explanation: "According to current knowledge, dogs' visual acuity is 3 to 4 times worse than that of humans. Objects closer than 30–50 cm appear blurry to them."
-  },
-  {
-    category: "A Dog's Senses",
-    icon: "👁️",
-    q: "Which colours can a dog NOT distinguish?",
-    options: ["Blue and yellow", "Green and blue", "Red and green", "Black and white"],
-    correct: 2,
-    explanation: "Dogs are red-green colourblind because they lack the cone cells that detect red. This is why they see a blue ball in green grass much better than a red one."
-  },
-  {
-    category: "A Dog's Senses",
-    icon: "👁️",
-    q: "Up to what distance can dogs detect small movements?",
-    options: ["100 metres", "500 metres", "Almost 1 kilometre", "5 kilometres"],
-    correct: 2,
-    explanation: "Dogs can detect small movements at distances of almost one kilometre. This ability varies from breed to breed."
-  },
-  {
-    category: "A Dog's Senses",
-    icon: "👂",
-    q: "According to some sources, up to what frequency can dogs hear?",
-    options: ["Up to 14,000 Hz (like humans)", "Up to 30,000 Hz", "Up to 65,000 Hz", "Up to 120,000 Hz"],
-    correct: 2,
-    explanation: "Some sources state that dogs can hear up to 65,000 hertz, while humans can only hear up to around 14,000 Hz. Dogs can therefore hear sounds in the ultrasonic range."
-  },
-  {
-    category: "A Dog's Senses",
-    icon: "👃",
-    q: "How many olfactory cells does a dog have compared to the 5–10 million in humans?",
-    options: ["About the same", "25–50 million", "125–300 million", "Over 1 billion"],
-    correct: 2,
-    explanation: "Dogs have 125–300 million olfactory cells. Their olfactory mucous membranes are also 20 times thicker than those of humans."
-  },
-  {
-    category: "A Dog's Senses",
-    icon: "👃",
-    q: "What is the vomeronasal organ (Jacobson's organ) in dogs?",
-    options: [
-      "An ear organ that detects low frequencies",
-      "An additional smell organ located in the palate behind the upper incisors",
-      "A special gland in the paw",
-      "Part of the balance system"
-    ],
-    correct: 1,
-    explanation: "Jacobson's organ is located in the palate directly behind the upper incisors and acts as a 'second nose'. Dogs use it for example when examining the urine of a female dog in heat."
-  },
-
-  // ── 02 Needs ──────────────────────────────────────────────────────────────
-  {
-    category: "A Dog's Needs",
-    icon: "💤",
-    q: "How many hours a day do dogs rest and sleep according to observations of dogs in the wild?",
-    options: ["8–10 hours", "12–14 hours", "Around 17 hours", "Around 22 hours"],
-    correct: 2,
-    explanation: "Observations of dogs living in the wild show they rest and sleep for around 17 hours a day. For puppies and old or sick dogs this can be up to 20 hours."
-  },
-  {
-    category: "A Dog's Needs",
-    icon: "💤",
-    q: "What is an important social training goal regarding interactions with other dogs?",
-    options: [
-      "Greeting and sniffing every dog they meet",
-      "Ignoring all unfamiliar dogs",
-      "Being able to walk past unfamiliar dogs in a relaxed manner or wait with the owner",
-      "Always being kept on a short lead near other dogs"
-    ],
-    correct: 2,
-    explanation: "An important training goal is for dogs to be able to walk past unfamiliar dogs in a relaxed manner. Dogs do not need to greet every dog and are often overwhelmed in those situations."
-  },
-
-  // ── 03 Behavioural Development ────────────────────────────────────────────
-  {
-    category: "Behavioural Development",
-    icon: "🐾",
-    q: "When does the socialisation period in puppies end?",
-    options: ["At 4 weeks", "At 12–14 weeks", "At 6 months", "At 1 year"],
-    correct: 1,
-    explanation: "The socialisation period lasts from week 4 to weeks 12–14. This sensitive period sets the course for the dog's future life."
-  },
-  {
-    category: "Behavioural Development",
-    icon: "🐾",
-    q: "What does 'socialisation' mean for a dog?",
-    options: [
-      "Learning obedience commands",
-      "Getting to know different social partners such as people and other dogs",
-      "House training",
-      "Having the dog neutered"
-    ],
-    correct: 1,
-    explanation: "Socialisation means getting to know different social partners such as different people and other dogs, so the dog learns to classify them positively."
-  },
-  {
-    category: "Behavioural Development",
-    icon: "🐾",
-    q: "When does the adolescent period (puberty) begin in dogs?",
-    options: ["From birth", "From around 16 weeks", "From around 1 year", "From around 2 years"],
-    correct: 1,
-    explanation: "The adolescent period begins from around 16 weeks and lasts until social maturity (approx. 18–48 months). Small breeds develop more quickly than large breeds."
-  },
-  {
-    category: "Behavioural Development",
-    icon: "🐾",
-    q: "Why do adolescent dogs sometimes seem 'disobedient'?",
-    options: [
-      "They want to provoke their owners",
-      "They are showing dominance",
-      "The cerebrum (impulse control, emotion regulation) is not yet fully developed",
-      "They were poorly trained"
-    ],
-    correct: 2,
-    explanation: "The cerebrum, which controls attention, emotional regulation and impulse control, is only fully developed at the end of adolescence. Young dogs are often simply unable to do what is asked of them."
-  },
-  {
-    category: "Behavioural Development",
-    icon: "🐾",
-    q: "By when must dogs be microchipped at the latest?",
-    options: [
-      "When handed over to the new owner",
-      "No later than 3 months after birth, and in any case before being handed over",
-      "Only after neutering",
-      "Only before travelling abroad"
-    ],
-    correct: 1,
-    explanation: "Dogs must be microchipped no later than 3 months after birth, but in any case before being handed over by the breeder (Art. 17 TSV)."
-  },
-
-  // ── 04 Body Language ──────────────────────────────────────────────────────
-  {
-    category: "Dog Body Language",
-    icon: "🐕",
-    q: "Which posture describes a relaxed, neutral dog?",
-    options: [
-      "Weight shifted forward, tense muscles, fixed gaze",
-      "Balanced centre of gravity, soft muscles, relaxed gaze",
-      "Weight shifted back, tail tucked, mouth closed",
-      "Back hair raised, ears pulled back"
-    ],
-    correct: 1,
-    explanation: "Neutral expression: balanced centre of gravity, relaxed posture with soft muscles, mouth relaxed (can be slightly open), relaxed gaze, tail in neutral position."
-  },
-  {
-    category: "Dog Body Language",
-    icon: "🐕",
-    q: "Which dog breeds have restricted communication abilities?",
-    options: [
-      "German Shepherds and Huskies",
-      "Pugs and Bulldogs (no or short tail, flat face)",
-      "Dachshunds and Beagles",
-      "Labradors and Golden Retrievers"
-    ],
-    correct: 1,
-    explanation: "Dogs like Pugs and Bulldogs have restricted communication: no or very short tail, short snout. This makes it hard for both humans and other dogs to read their body language."
-  },
-  {
-    category: "Dog Body Language",
-    icon: "🐕",
-    q: "What does a dog signal with its weight shifted back, tail tucked and head lowered?",
-    options: ["Aggression", "Relaxation", "Fear or insecurity", "A play invitation"],
-    correct: 2,
-    explanation: "Weight shifted backwards, tucked tail, lowered head and closed mouth all signal fear or insecurity."
-  },
-  {
-    category: "Dog Body Language",
-    icon: "🐕",
-    q: "Why should you always look at the WHOLE dog when reading body language?",
-    options: [
-      "The tail alone gives enough information",
-      "To avoid misinterpretation — signals can be misleading if only individual parts are observed",
-      "This is only important for dog trainers",
-      "Because the head is the most important part"
-    ],
-    correct: 1,
-    explanation: "You must always observe the entire dog (from nose tip to tail). Different breeds carry their tails differently, which can lead to misinterpretation without full context."
-  },
-
-  // ── 05 Learning Theory ────────────────────────────────────────────────────
-  {
-    category: "Learning Theory",
-    icon: "🧠",
-    q: "What is 'classical conditioning' in dogs?",
-    options: [
-      "A behaviour is strengthened by a reward",
-      "A neutral stimulus is linked to a positive or negative emotion",
-      "The dog learns by watching other dogs",
-      "The absence of a reaction to a stimulus after repeated exposure"
-    ],
-    correct: 1,
-    explanation: "In classical conditioning, a neutral stimulus (e.g. a whistle) is linked to an emotion. Example: whistle = food → the dog hears the whistle, feels happy, and approaches."
-  },
-  {
-    category: "Learning Theory",
-    icon: "🧠",
-    q: "What does 'positive reinforcement' mean in dog training?",
-    options: [
-      "Removing something pleasant from the dog",
-      "Giving the dog something pleasant after a desired behaviour",
-      "Punishing the dog when it makes a mistake",
-      "Removing an unpleasant stimulus from the dog"
-    ],
-    correct: 1,
-    explanation: "Positive reinforcement means: after a desired behaviour, the dog receives something pleasant (e.g. a treat, toy, or praise). This increases the likelihood the behaviour will be repeated."
-  },
-  {
-    category: "Learning Theory",
-    icon: "🧠",
-    q: "What is 'habituation' in dogs?",
-    options: [
-      "Learning new commands",
-      "Getting used to environmental stimuli through repeated, harmless exposure",
-      "A fear response to unknown stimuli",
-      "Social learning through observation"
-    ],
-    correct: 1,
-    explanation: "Habituation is getting used to environmental stimuli (e.g. traffic, vacuum cleaners, fireworks) through repeated harmless exposure. The opposite — sensitisation — occurs when stimuli are experienced as threatening."
-  },
-  {
-    category: "Learning Theory",
-    icon: "🧠",
-    q: "Why are short, repeated training sessions better than long, infrequent ones?",
-    options: [
-      "Because dogs have no stamina",
-      "Because it is easier for the owner",
-      "Because mental stimulation should be measured — 'less is often more'",
-      "It makes no difference"
-    ],
-    correct: 2,
-    explanation: "Mental stimulation should be dosed carefully. Short sequences trained several times is usually more effective than fewer, longer sessions. Finding the right level for each individual dog is important."
-  },
-
-  // ── 06 Housing & Daily Life ───────────────────────────────────────────────
-  {
-    category: "Housing & Daily Life",
-    icon: "🏠",
-    q: "What is required for a dog kept on a running chain?",
-    options: [
-      "At least 2 hours of free movement per day",
-      "At least 5 hours of free movement per day",
-      "No free movement required if the chain is long enough",
-      "At least 8 hours of free movement per week"
-    ],
-    correct: 1,
-    explanation: "Dogs on a running chain must be able to move freely for at least 5 hours per day. The running chain must not be attached to a slip collar."
-  },
-  {
-    category: "Housing & Daily Life",
-    icon: "🏠",
-    q: "What is the minimum daylight requirement for rooms where dogs are kept?",
-    options: [
-      "Natural daylight of at least 15 lux during the day",
-      "Artificial light is always sufficient",
-      "There are no lighting regulations",
-      "Only applies to kennel buildings"
-    ],
-    correct: 0,
-    explanation: "Rooms in which dogs are kept must use natural daylight of at least 15 lux during the day (Art. 33 TSchV)."
-  },
-  {
-    category: "Housing & Daily Life",
-    icon: "🏠",
-    q: "Can a travel crate be used permanently as a sleeping place inside the home?",
-    options: [
-      "Yes, without restriction",
-      "Only if it is large enough",
-      "No — unless the gate is removed, in which case it may be offered as a voluntary retreat",
-      "Only for puppies up to 6 months"
-    ],
-    correct: 2,
-    explanation: "Using a travel crate as permanent housing is prohibited, even for short periods. If the gate is removed, it may be made available to the dog as a voluntary retreat."
-  },
-
-  // ── 07 Law & Insurance ────────────────────────────────────────────────────
-  {
-    category: "Law & Legal Requirements",
-    icon: "⚖️",
-    q: "What is the minimum coverage required for dog owner liability insurance in Canton Zurich?",
-    options: ["CHF 100,000", "CHF 500,000", "CHF 1 million", "CHF 2 million"],
-    correct: 2,
-    explanation: "Dog owners must have valid liability insurance with a minimum coverage of one million Swiss francs (Section 6 HuG)."
-  },
-  {
-    category: "Law & Legal Requirements",
-    icon: "⚖️",
-    q: "Which of the following actions is PROHIBITED by law in Switzerland?",
-    options: [
-      "Keeping a dog temporarily on a running chain",
-      "Keeping a dog in an apartment",
-      "Ear cropping and tail docking for aesthetic reasons",
-      "Keeping a dog in a kennel"
-    ],
-    correct: 2,
-    explanation: "Ear cropping and tail docking for aesthetic reasons is prohibited in Switzerland (Art. 22 TSchV). It is only permitted for medical reasons."
-  },
-  {
-    category: "Law & Legal Requirements",
-    icon: "⚖️",
-    q: "Which device is PROHIBITED when handling dogs in Switzerland?",
-    options: [
-      "A standard collar",
-      "A harness",
-      "Electric devices with unpleasant acoustic signals (e.g. Pet Gentle)",
-      "A muzzle"
-    ],
-    correct: 2,
-    explanation: "All electric devices emitting unpleasant acoustic signals, chemical substances or vibrations are prohibited — including anti-barking devices that emit only water or compressed air (Art. 76 TSchV)."
-  },
-  {
-    category: "Law & Legal Requirements",
-    icon: "⚖️",
-    q: "How long may a dog be kept alone in a crate or kennel if it has less than 5 hours of contact per day?",
-    options: ["Indefinitely", "Maximum 1 month", "Maximum 3 months", "Maximum 6 months"],
-    correct: 2,
-    explanation: "A dog permanently kept alone in a crate or kennel with less than 5 hours of daily contact may only be housed that way for a maximum of 3 months. After that, it needs visual, auditory and olfactory contact with another dog."
-  },
-  {
-    category: "Law & Legal Requirements",
-    icon: "⚖️",
-    q: "Which dog breeds are PROHIBITED in the Canton of Zurich?",
-    options: [
-      "Labrador, Golden Retriever, Beagle",
-      "American Staffordshire Terrier, Pit Bull, Rottweiler",
-      "German Shepherd, Husky, Dobermann",
-      "Pug, Bulldog, Chihuahua"
-    ],
-    correct: 1,
-    explanation: "The Canton of Zurich maintains a list of breeds with increased risk potential. These include American Staffordshire Terrier, Bull Terrier, Pit Bull Terrier, Staffordshire Bull Terrier, Rottweiler, and American Bully."
-  },
-  {
-    category: "Law & Legal Requirements",
-    icon: "⚖️",
-    q: "From what age may puppies be separated from their mother?",
-    options: ["28 days", "42 days", "56 days (8 weeks)", "70 days"],
-    correct: 2,
-    explanation: "Separating puppies less than 56 days (8 weeks) old from their mother or foster mother is prohibited by Swiss law (Art. 70 TSchV)."
-  },
-
-  // ── 08 Theory Exam & Training ─────────────────────────────────────────────
-  {
-    category: "Theory Exam & Training",
-    icon: "📋",
-    q: "Who is required to take the theory exam in Canton Zurich?",
-    options: [
-      "Only first-time dog owners",
-      "First-time owners or anyone who has not owned a dog in more than 10 years",
-      "All dog owners regardless of experience",
-      "Only owners of large breeds"
-    ],
-    correct: 1,
-    explanation: "Anyone who has never owned a dog, or has not owned one for more than 10 years, is required by law to complete the theoretical dog training and pass an examination."
-  },
-  {
-    category: "Theory Exam & Training",
-    icon: "📋",
-    q: "How long after acquiring a dog must the theory exam be passed at the latest?",
-    options: ["Within 1 month", "Within 2 months", "Within 6 months", "Before acquiring the dog"],
-    correct: 1,
-    explanation: "The theory exam must be passed no later than 2 months after becoming a dog owner. It may be completed up to 1 year before acquiring the dog."
-  },
-  {
-    category: "Theory Exam & Training",
-    icon: "📋",
-    q: "How many lessons does the mandatory practical dog training course consist of at minimum?",
-    options: ["3 lessons of 60 min", "6 lessons of 60 min", "10 lessons of 45 min", "12 lessons of 30 min"],
-    correct: 1,
-    explanation: "Practical dog training consists of a course comprising at least 6 lessons of 60 minutes each. All dog owners must attend this course regardless of the size or breed of their dog."
-  },
-
-  // ── 09 AMICUS ─────────────────────────────────────────────────────────────
-  {
-    category: "AMICUS & Registration",
-    icon: "🗂️",
-    q: "What is AMICUS?",
-    options: [
-      "A Swiss dog trainers' association",
-      "The national dog database of Switzerland",
-      "An insurance company for dog owners",
-      "A veterinary network in Canton Zurich"
-    ],
-    correct: 1,
-    explanation: "AMICUS is the dog database for Switzerland. Registration of all dog owners and their dogs in this database is mandatory. It documents the entire life history of each dog."
-  },
-  {
-    category: "AMICUS & Registration",
-    icon: "🗂️",
-    q: "Within what timeframe must a newly acquired dog be registered in AMICUS?",
-    options: ["Within 3 days", "Within 10 days", "Within 1 month", "Within 3 months"],
-    correct: 1,
-    explanation: "If a dog is acquired, this must be recorded in AMICUS within 10 days (Art. 17d TSV). The same applies to selling, giving away or the death of the dog."
-  },
-  {
-    category: "AMICUS & Registration",
-    icon: "🗂️",
-    q: "Who is authorised to make address and name changes in AMICUS?",
-    options: [
-      "The dog owner themselves at any time online",
-      "Only the vet",
-      "Only the municipality; the owner can update email and phone themselves",
-      "The cantonal Veterinary Office"
-    ],
-    correct: 2,
-    explanation: "Dog owners can update their email address and phone number in their AMICUS account themselves. Changes to name and address can only be made by the municipality."
-  },
-
-  // ── 10 Travelling ─────────────────────────────────────────────────────────
-  {
-    category: "Travelling with Dogs",
-    icon: "✈️",
-    q: "What is the minimum requirement when entering Switzerland from an EU country with a dog?",
-    options: [
-      "Microchip only",
-      "Microchip, EU pet passport and valid rabies vaccination",
-      "Vaccination card only",
-      "No requirements within the EU"
-    ],
-    correct: 1,
-    explanation: "When entering from EU countries (including Norway, Iceland, Northern Ireland) you need: microchip, EU pet passport and a valid rabies vaccination."
-  },
-  {
-    category: "Travelling with Dogs",
-    icon: "✈️",
-    q: "Can dogs with docked tails or cropped ears generally be brought into Switzerland?",
-    options: [
-      "Yes, without restriction",
-      "No — except for proven medical reasons or when the owner is relocating to Switzerland",
-      "Only if the dog is microchipped",
-      "Only from EU countries"
-    ],
-    correct: 1,
-    explanation: "Dogs with docked tails or cropped ears may generally not be brought into Switzerland. Exceptions apply when there are proven medical reasons or when the owner is moving to Switzerland with the dog."
-  }
+  {category:"A Dog's Senses",icon:"👁️",q:"How much worse is a dog's visual acuity compared to a human's?",options:["2 times worse","3 to 4 times worse","10 times worse","About the same"],correct:1,explanation:"According to current knowledge, dogs' visual acuity is 3–4 times worse than that of humans. Objects closer than 30–50 cm appear blurry to them."},
+  {category:"A Dog's Senses",icon:"👁️",q:"Which colours can a dog NOT distinguish?",options:["Blue and yellow","Green and blue","Red and green","Black and white"],correct:2,explanation:"Dogs are red-green colourblind because they lack the cone cells that detect red. A blue ball in green grass is much easier to see than a red one."},
+  {category:"A Dog's Senses",icon:"👁️",q:"Up to what distance can dogs detect small movements?",options:["100 metres","500 metres","Almost 1 kilometre","5 kilometres"],correct:2,explanation:"Dogs can detect small movements at distances of almost one kilometre. This ability varies from breed to breed."},
+  {category:"A Dog's Senses",icon:"👂",q:"According to some sources, up to what frequency can dogs hear?",options:["Up to 14,000 Hz (like humans)","Up to 30,000 Hz","Up to 65,000 Hz","Up to 120,000 Hz"],correct:2,explanation:"Some sources state dogs can hear up to 65,000 Hz. Humans hear up to ~14,000 Hz. Dogs hear in the ultrasonic range."},
+  {category:"A Dog's Senses",icon:"👃",q:"How many olfactory cells does a dog have compared to the 5–10 million in humans?",options:["About the same","25–50 million","125–300 million","Over 1 billion"],correct:2,explanation:"Dogs have 125–300 million olfactory cells. Their olfactory mucous membranes are also 20 times thicker than those of humans."},
+  {category:"A Dog's Senses",icon:"👃",q:"What is the vomeronasal organ (Jacobson's organ) in dogs?",options:["An ear organ that detects low frequencies","An additional smell organ in the palate behind the upper incisors","A special gland in the paw","Part of the balance system"],correct:1,explanation:"Jacobson's organ is located in the palate directly behind the upper incisors and acts as a 'second nose', used e.g. when examining the urine of a female dog in heat."},
+  {category:"A Dog's Needs",icon:"💤",q:"How many hours a day do dogs rest and sleep according to observations in the wild?",options:["8–10 hours","12–14 hours","Around 17 hours","Around 22 hours"],correct:2,explanation:"Observations of dogs in the wild show they rest and sleep for around 17 hours a day. Puppies and old/sick dogs can sleep up to 20 hours."},
+  {category:"A Dog's Needs",icon:"💤",q:"What is an important social training goal regarding interactions with other dogs?",options:["Greeting and sniffing every dog they meet","Ignoring all unfamiliar dogs","Being able to walk past unfamiliar dogs in a relaxed manner","Always being kept on a short lead near other dogs"],correct:2,explanation:"An important training goal is for dogs to be able to walk past unfamiliar dogs in a relaxed manner. Dogs do not need to greet every dog and are often overwhelmed in those situations."},
+  {category:"Behavioural Development",icon:"🐾",q:"When does the socialisation period in puppies end?",options:["At 4 weeks","At 12–14 weeks","At 6 months","At 1 year"],correct:1,explanation:"The socialisation period lasts from week 4 to weeks 12–14. This sensitive period sets the course for the dog's future life."},
+  {category:"Behavioural Development",icon:"🐾",q:"What does 'socialisation' mean for a dog?",options:["Learning obedience commands","Getting to know different social partners such as people and other dogs","House training","Having the dog neutered"],correct:1,explanation:"Socialisation means getting to know different social partners such as different people and other dogs, so the dog learns to classify them positively."},
+  {category:"Behavioural Development",icon:"🐾",q:"When does the adolescent period (puberty) begin in dogs?",options:["From birth","From around 16 weeks","From around 1 year","From around 2 years"],correct:1,explanation:"The adolescent period begins from around 16 weeks and lasts until social maturity (approx. 18–48 months). Small breeds develop more quickly than large breeds."},
+  {category:"Behavioural Development",icon:"🐾",q:"Why do adolescent dogs sometimes seem 'disobedient'?",options:["They want to provoke their owners","They are showing dominance","The cerebrum (impulse control, emotion regulation) is not yet fully developed","They were poorly trained"],correct:2,explanation:"The cerebrum, which controls attention, emotional regulation and impulse control, is only fully developed at the end of adolescence. Young dogs are often simply unable to do what is asked of them."},
+  {category:"Behavioural Development",icon:"🐾",q:"By when must dogs be microchipped at the latest?",options:["When handed over to the new owner","No later than 3 months after birth, and in any case before being handed over","Only after neutering","Only before travelling abroad"],correct:1,explanation:"Dogs must be microchipped no later than 3 months after birth, but in any case before being handed over by the breeder (Art. 17 TSV)."},
+  {category:"Dog Body Language",icon:"🐕",q:"Which posture describes a relaxed, neutral dog?",options:["Weight shifted forward, tense muscles, fixed gaze","Balanced centre of gravity, soft muscles, relaxed gaze","Weight shifted back, tail tucked, mouth closed","Back hair raised, ears pulled back"],correct:1,explanation:"Neutral expression: balanced centre of gravity, relaxed posture with soft muscles, mouth relaxed, relaxed gaze, tail in neutral position."},
+  {category:"Dog Body Language",icon:"🐕",q:"Which dog breeds have restricted communication abilities?",options:["German Shepherds and Huskies","Pugs and Bulldogs (no or short tail, flat face)","Dachshunds and Beagles","Labradors and Golden Retrievers"],correct:1,explanation:"Pugs and Bulldogs have no or very short tails and flat faces — making it hard for both humans and other dogs to read their body language."},
+  {category:"Dog Body Language",icon:"🐕",q:"What does a dog signal with weight shifted back, tail tucked and head lowered?",options:["Aggression","Relaxation","Fear or insecurity","A play invitation"],correct:2,explanation:"Weight shifted backwards, tucked tail, lowered head and closed mouth all signal fear or insecurity."},
+  {category:"Dog Body Language",icon:"🐕",q:"Why should you always look at the WHOLE dog when reading body language?",options:["The tail alone gives enough information","To avoid misinterpretation — signals can be misleading if only individual parts are observed","This is only important for dog trainers","Because the head is the most important part"],correct:1,explanation:"You must always observe the entire dog from nose tip to tail. Different breeds carry their tails differently, which can lead to misinterpretation without full context."},
+  {category:"Dog Body Language",icon:"🐕",q:"What is a 'stressed facial expression' in a dog often mistaken for?",options:["Aggression","Fear","A happy smile","Hunger"],correct:2,explanation:"A stressed facial expression (corners of mouth pulled far back, tongue hanging out, narrowed or wide eyes) is often mistakenly interpreted as the dog 'smiling' or being happy."},
+  {category:"Learning Theory",icon:"🧠",q:"What is 'classical conditioning' in dogs?",options:["A behaviour is strengthened by a reward","A neutral stimulus is linked to a positive or negative emotion","The dog learns by watching other dogs","The absence of a reaction to a stimulus after repeated exposure"],correct:1,explanation:"In classical conditioning, a neutral stimulus (e.g. a whistle) is linked to an emotion. Example: whistle = food → the dog hears the whistle, feels happy, and approaches."},
+  {category:"Learning Theory",icon:"🧠",q:"What does 'positive reinforcement' mean in dog training?",options:["Removing something pleasant from the dog","Giving the dog something pleasant after a desired behaviour","Punishing the dog when it makes a mistake","Removing an unpleasant stimulus from the dog"],correct:1,explanation:"Positive reinforcement means: after a desired behaviour, the dog receives something pleasant (e.g. a treat, toy, or praise). This increases the likelihood the behaviour will be repeated."},
+  {category:"Learning Theory",icon:"🧠",q:"What is 'habituation' in dogs?",options:["Learning new commands","Getting used to environmental stimuli through repeated, harmless exposure","A fear response to unknown stimuli","Social learning through observation"],correct:1,explanation:"Habituation is getting used to environmental stimuli (e.g. traffic, vacuum cleaners) through repeated harmless exposure. The dog learns the stimulus is irrelevant."},
+  {category:"Learning Theory",icon:"🧠",q:"Why are short, repeated training sessions better than long, infrequent ones?",options:["Because dogs have no stamina","Because it is easier for the owner","Because mental stimulation should be measured — 'less is often more'","It makes no difference"],correct:2,explanation:"Mental stimulation should be dosed carefully. Short sequences trained several times is usually more effective than fewer, longer sessions."},
+  {category:"Housing & Daily Life",icon:"🏠",q:"What is required for a dog kept on a running chain?",options:["At least 2 hours of free movement per day","At least 5 hours of free movement per day","No free movement required if the chain is long enough","At least 8 hours of free movement per week"],correct:1,explanation:"Dogs on a running chain must be able to move freely for at least 5 hours per day. The chain must not be attached to a slip collar."},
+  {category:"Housing & Daily Life",icon:"🏠",q:"What is the minimum daylight requirement for rooms where dogs are kept?",options:["Natural daylight of at least 15 lux during the day","Artificial light is always sufficient","There are no lighting regulations","Only applies to kennel buildings"],correct:0,explanation:"Rooms in which dogs are kept must use natural daylight of at least 15 lux during the day (Art. 33 TSchV)."},
+  {category:"Housing & Daily Life",icon:"🏠",q:"Can a travel crate be used permanently as a sleeping place inside the home?",options:["Yes, without restriction","Only if it is large enough","No — unless the gate is removed, in which case it may be offered as a voluntary retreat","Only for puppies up to 6 months"],correct:2,explanation:"Using a travel crate as permanent housing is prohibited, even for short periods. If the gate is removed, it may be offered as a voluntary retreat."},
+  {category:"Law & Legal Requirements",icon:"⚖️",q:"What is the minimum coverage required for dog owner liability insurance in Canton Zurich?",options:["CHF 100,000","CHF 500,000","CHF 1 million","CHF 2 million"],correct:2,explanation:"Dog owners must have valid liability insurance with a minimum coverage of CHF 1 million (Section 6 HuG)."},
+  {category:"Law & Legal Requirements",icon:"⚖️",q:"Which of the following actions is PROHIBITED by law in Switzerland?",options:["Keeping a dog temporarily on a running chain","Keeping a dog in an apartment","Ear cropping and tail docking for aesthetic reasons","Keeping a dog in a kennel"],correct:2,explanation:"Ear cropping and tail docking for aesthetic reasons is prohibited in Switzerland (Art. 22 TSchV). It is only permitted for medical reasons."},
+  {category:"Law & Legal Requirements",icon:"⚖️",q:"Which device is PROHIBITED when handling dogs in Switzerland?",options:["A standard collar","A harness","Electric devices with unpleasant acoustic signals (e.g. Pet Gentle)","A muzzle"],correct:2,explanation:"All electric devices emitting unpleasant acoustic signals, chemical substances or vibrations are prohibited — including anti-barking devices that emit only water or compressed air (Art. 76 TSchV)."},
+  {category:"Law & Legal Requirements",icon:"⚖️",q:"How long may a dog be kept alone in a crate or kennel if it has less than 5 hours of contact per day?",options:["Indefinitely","Maximum 1 month","Maximum 3 months","Maximum 6 months"],correct:2,explanation:"A dog alone in a crate/kennel with less than 5 hours of daily contact may only be housed that way for a maximum of 3 months. After that, it needs contact with another dog."},
+  {category:"Law & Legal Requirements",icon:"⚖️",q:"Which dog breeds are PROHIBITED in the Canton of Zurich?",options:["Labrador, Golden Retriever, Beagle","American Staffordshire Terrier, Pit Bull, Rottweiler","German Shepherd, Husky, Dobermann","Pug, Bulldog, Chihuahua"],correct:1,explanation:"Canton Zurich bans breeds including American Staffordshire Terrier, Bull Terrier, Pit Bull Terrier, Staffordshire Bull Terrier, Rottweiler, and American Bully."},
+  {category:"Law & Legal Requirements",icon:"⚖️",q:"From what age may puppies be separated from their mother?",options:["28 days","42 days","56 days (8 weeks)","70 days"],correct:2,explanation:"Separating puppies less than 56 days (8 weeks) old from their mother or foster mother is prohibited by Swiss law (Art. 70 TSchV)."},
+  {category:"Theory Exam & Training",icon:"📋",q:"Who is required to take the theory exam in Canton Zurich?",options:["Only first-time dog owners","First-time owners or anyone who has not owned a dog in more than 10 years","All dog owners regardless of experience","Only owners of large breeds"],correct:1,explanation:"Anyone who has never owned a dog, or has not owned one for more than 10 years, is required to complete the theoretical dog training and pass an examination."},
+  {category:"Theory Exam & Training",icon:"📋",q:"How long after acquiring a dog must the theory exam be passed at the latest?",options:["Within 1 month","Within 2 months","Within 6 months","Before acquiring the dog"],correct:1,explanation:"The theory exam must be passed no later than 2 months after becoming a dog owner. It may be completed up to 1 year before acquiring the dog."},
+  {category:"Theory Exam & Training",icon:"📋",q:"How many lessons does the mandatory practical dog training course consist of at minimum?",options:["3 lessons of 60 min","6 lessons of 60 min","10 lessons of 45 min","12 lessons of 30 min"],correct:1,explanation:"Practical dog training consists of a course comprising at least 6 lessons of 60 minutes each. All dog owners must attend regardless of dog size or breed."},
+  {category:"AMICUS & Registration",icon:"🗂️",q:"What is AMICUS?",options:["A Swiss dog trainers' association","The national dog database of Switzerland","An insurance company for dog owners","A veterinary network in Canton Zurich"],correct:1,explanation:"AMICUS is the mandatory national dog database for Switzerland. Registration of all dog owners and their dogs is compulsory."},
+  {category:"AMICUS & Registration",icon:"🗂️",q:"Within what timeframe must a newly acquired dog be registered in AMICUS?",options:["Within 3 days","Within 10 days","Within 1 month","Within 3 months"],correct:1,explanation:"If a dog is acquired, this must be recorded in AMICUS within 10 days (Art. 17d TSV). The same applies to selling, giving away or the death of the dog."},
+  {category:"AMICUS & Registration",icon:"🗂️",q:"Who is authorised to make address and name changes in AMICUS?",options:["The dog owner themselves at any time online","Only the vet","Only the municipality; the owner can update email and phone themselves","The cantonal Veterinary Office"],correct:2,explanation:"Dog owners can update their email and phone in AMICUS themselves. Changes to name and address can only be made by the municipality."},
+  {category:"Travelling with Dogs",icon:"✈️",q:"What is the minimum requirement when entering Switzerland from an EU country with a dog?",options:["Microchip only","Microchip, EU pet passport and valid rabies vaccination","Vaccination card only","No requirements within the EU"],correct:1,explanation:"When entering from EU countries you need: microchip, EU pet passport and a valid rabies vaccination."},
+  {category:"Travelling with Dogs",icon:"✈️",q:"Can dogs with docked tails or cropped ears generally be brought into Switzerland?",options:["Yes, without restriction","No — except for proven medical reasons or when the owner is relocating to Switzerland","Only if the dog is microchipped","Only from EU countries"],correct:1,explanation:"Dogs with docked tails or cropped ears may generally not be brought into Switzerland. Exceptions apply for proven medical reasons or when the owner is moving to Switzerland."}
 ];
 
-// Build topic list
+// ── Build filters ──────────────────────────────────────────
 const topics = {};
-QUESTIONS.forEach(q => {
-  if (!topics[q.category]) topics[q.category] = { icon: q.icon, count: 0 };
-  topics[q.category].count++;
-});
-
-const grid = document.getElementById('topic-grid');
+QUESTIONS.forEach(q=>{if(!topics[q.category])topics[q.category]={icon:q.icon,count:0};topics[q.category].count++});
 const filterRow = document.querySelector('.filter-row');
-Object.entries(topics).forEach(([name, info]) => {
-  const b = document.createElement('div');
-  b.className = 'topic-badge';
-  b.innerHTML = `<span class="icon">${info.icon}</span><span>${name} <strong>(${info.count})</strong></span>`;
-  grid.appendChild(b);
-  const btn = document.createElement('button');
-  btn.className = 'filter-btn';
-  btn.dataset.topic = name;
-  btn.textContent = `${info.icon} ${name}`;
-  btn.onclick = () => selectTopic(btn);
+Object.entries(topics).forEach(([name,info])=>{
+  const btn=document.createElement('button');
+  btn.className='filter-btn';btn.dataset.topic=name;
+  btn.textContent=`${info.icon} ${name}`;
+  btn.onclick=()=>selectTopic(btn);
   filterRow.appendChild(btn);
 });
 
-let selectedTopic = 'all';
-function selectTopic(btn) {
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  selectedTopic = btn.dataset.topic;
+let selectedTopic='all';
+function selectTopic(btn){document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');selectedTopic=btn.dataset.topic}
+
+// ── Tab switching ──────────────────────────────────────────
+function switchTab(tab){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('screen-'+tab).classList.add('active');
+  event.currentTarget.classList.add('active');
+  if(tab==='progress')renderProgress();
 }
 
-// Quiz state
-let questions = [];
-let current = 0;
-let results = [];
+// ── Chapter toggle ─────────────────────────────────────────
+function toggleChapter(id){document.getElementById(id).classList.toggle('open')}
 
-function shuffle(arr) {
-  return arr.slice().sort(() => Math.random() - 0.5);
-}
+// ── Quiz state ─────────────────────────────────────────────
+let questions=[],current=0,sessionResults=[];
 
-function startQuiz() {
-  const pool = selectedTopic === 'all'
-    ? QUESTIONS
-    : QUESTIONS.filter(q => q.category === selectedTopic);
-  questions = shuffle(pool);
-  current = 0;
-  results = [];
+function shuffle(arr){return arr.slice().sort(()=>Math.random()-0.5)}
 
-  document.getElementById('start-screen').style.display = 'none';
-  document.getElementById('quiz-screen').style.display = 'block';
-  document.getElementById('results-screen').style.display = 'none';
+function startQuiz(){
+  const pool=selectedTopic==='all'?QUESTIONS:QUESTIONS.filter(q=>q.category===selectedTopic);
+  questions=shuffle(pool);current=0;sessionResults=[];
+  document.getElementById('quiz-setup').style.display='none';
+  document.getElementById('quiz-active').style.display='block';
+  document.getElementById('quiz-results').style.display='none';
   showQuestion();
 }
 
-function showQuestion() {
-  const q = questions[current];
-  const total = questions.length;
+function quitQuiz(){
+  document.getElementById('quiz-setup').style.display='block';
+  document.getElementById('quiz-active').style.display='none';
+  document.getElementById('quiz-results').style.display='none';
+}
 
-  document.getElementById('progress-bar').style.width = `${(current / total) * 100}%`;
-  document.getElementById('question-counter').textContent = `${current + 1} / ${total}`;
-  document.getElementById('category-tag').innerHTML = `${q.icon} ${q.category}`;
-  document.getElementById('question-text').textContent = q.q;
-
-  const el = document.getElementById('explanation-box');
-  el.textContent = '';
-  el.classList.remove('show');
-
-  const btnNext = document.getElementById('btn-next');
-  btnNext.classList.remove('show');
-  btnNext.textContent = current < questions.length - 1 ? 'Next Question →' : 'See Results';
-
-  const list = document.getElementById('options-list');
-  list.innerHTML = '';
-  const letters = ['A', 'B', 'C', 'D'];
-  const optionOrder = shuffle([0, 1, 2, 3].slice(0, q.options.length));
-
-  optionOrder.forEach((origIdx, i) => {
-    const btn = document.createElement('button');
-    btn.className = 'option-btn';
-    btn.dataset.orig = origIdx;
-    btn.innerHTML = `<span class="letter">${letters[i]}</span><span>${q.options[origIdx]}</span>`;
-    btn.onclick = () => selectAnswer(btn, origIdx, q);
+function showQuestion(){
+  const q=questions[current];const total=questions.length;
+  document.getElementById('progress-bar').style.width=`${(current/total)*100}%`;
+  document.getElementById('question-counter').textContent=`${current+1} / ${total}`;
+  document.getElementById('category-tag').innerHTML=`${q.icon} ${q.category}`;
+  document.getElementById('question-text').textContent=q.q;
+  const el=document.getElementById('explanation-box');el.textContent='';el.classList.remove('show');
+  const btnNext=document.getElementById('btn-next');btnNext.classList.remove('show');
+  btnNext.textContent=current<questions.length-1?'Next →':'See Results';
+  const list=document.getElementById('options-list');list.innerHTML='';
+  const letters=['A','B','C','D'];
+  const order=shuffle([0,1,2,3].slice(0,q.options.length));
+  order.forEach((origIdx,i)=>{
+    const btn=document.createElement('button');
+    btn.className='option-btn';btn.dataset.orig=origIdx;
+    btn.innerHTML=`<span class="letter">${letters[i]}</span><span>${q.options[origIdx]}</span>`;
+    btn.onclick=()=>selectAnswer(btn,origIdx,q);
     list.appendChild(btn);
   });
 }
 
-function selectAnswer(btn, chosenIdx, q) {
-  document.querySelectorAll('.option-btn').forEach(b => b.disabled = true);
-
-  const isCorrect = chosenIdx === q.correct;
-
-  if (isCorrect) {
-    btn.classList.add('correct');
-  } else {
-    btn.classList.add('wrong');
-    document.querySelectorAll('.option-btn').forEach(b => {
-      if (parseInt(b.dataset.orig) === q.correct) b.classList.add('reveal');
-    });
-  }
-
-  results.push({
-    q: q.q,
-    category: q.category,
-    icon: q.icon,
-    correct: isCorrect,
-    chosen: q.options[chosenIdx],
-    answer: q.options[q.correct]
-  });
-
-  const el = document.getElementById('explanation-box');
-  el.textContent = q.explanation;
-  el.classList.add('show');
+function selectAnswer(btn,chosenIdx,q){
+  document.querySelectorAll('.option-btn').forEach(b=>b.disabled=true);
+  const isCorrect=chosenIdx===q.correct;
+  if(isCorrect){btn.classList.add('correct')}
+  else{btn.classList.add('wrong');document.querySelectorAll('.option-btn').forEach(b=>{if(parseInt(b.dataset.orig)===q.correct)b.classList.add('reveal')})}
+  sessionResults.push({q:q.q,category:q.category,icon:q.icon,correct:isCorrect,chosen:q.options[chosenIdx],answer:q.options[q.correct]});
+  document.getElementById('explanation-box').textContent=q.explanation;
+  document.getElementById('explanation-box').classList.add('show');
   document.getElementById('btn-next').classList.add('show');
 }
 
-function nextQuestion() {
+function nextQuestion(){
   current++;
-  if (current >= questions.length) {
-    showResults();
-  } else {
-    showQuestion();
-  }
+  if(current>=questions.length)showResults();
+  else showQuestion();
 }
 
-function showResults() {
-  document.getElementById('quiz-screen').style.display = 'none';
-  document.getElementById('results-screen').style.display = 'block';
-
-  const total = results.length;
-  const correct = results.filter(r => r.correct).length;
-  const pct = Math.round((correct / total) * 100);
-  const pass = pct >= 75;
-
-  const circle = document.getElementById('score-circle');
-  circle.className = 'score-circle ' + (pass ? 'pass' : 'fail');
-  document.getElementById('score-pct').textContent = `${correct}/${total}`;
-  document.getElementById('result-title').textContent = pass ? 'Passed!' : 'Not passed';
-  document.getElementById('result-sub').textContent = `${pct}% correct — Minimum passing score: 75%`;
-
-  const cats = {};
-  results.forEach(r => {
-    if (!cats[r.category]) cats[r.category] = { icon: r.icon, correct: 0, total: 0 };
-    cats[r.category].total++;
-    if (r.correct) cats[r.category].correct++;
+function showResults(){
+  document.getElementById('quiz-active').style.display='none';
+  document.getElementById('quiz-results').style.display='block';
+  const total=sessionResults.length;
+  const correct=sessionResults.filter(r=>r.correct).length;
+  const pct=Math.round((correct/total)*100);
+  const pass=pct>=75;
+  const circle=document.getElementById('score-circle');
+  circle.className='score-circle '+(pass?'pass':'fail');
+  document.getElementById('score-pct').textContent=`${correct}/${total}`;
+  document.getElementById('result-title').textContent=pass?'Passed! 🎉':'Not passed';
+  document.getElementById('result-sub').textContent=`${pct}% correct — Minimum passing score: 75%`;
+  // Breakdown
+  const cats={};
+  sessionResults.forEach(r=>{if(!cats[r.category])cats[r.category]={icon:r.icon,correct:0,total:0};cats[r.category].total++;if(r.correct)cats[r.category].correct++});
+  const bd=document.getElementById('breakdown');bd.innerHTML='';
+  Object.entries(cats).forEach(([cat,s])=>{
+    const p=Math.round((s.correct/s.total)*100);const good=p>=75;
+    bd.innerHTML+=`<div class="breakdown-item"><div class="cat">${s.icon} ${cat}</div><div class="sc ${good?'sc-g':'sc-b'}">${s.correct}/${s.total} (${p}%)</div></div>`;
   });
-  const bd = document.getElementById('breakdown');
-  bd.innerHTML = '';
-  Object.entries(cats).forEach(([cat, s]) => {
-    const p = Math.round((s.correct / s.total) * 100);
-    const good = p >= 75;
-    bd.innerHTML += `<div class="breakdown-item">
-      <div class="cat">${s.icon} ${cat}</div>
-      <div class="score ${good ? 'score-g' : 'score-b'}">${s.correct}/${s.total} (${p}%)</div>
-    </div>`;
-  });
+  // Wrong answers
+  const wrong=sessionResults.filter(r=>!r.correct);
+  const rev=document.getElementById('review-list');
+  if(wrong.length===0){rev.innerHTML='<p style="color:#276749;font-weight:600;margin-top:14px;">All questions answered correctly!</p>'}
+  else{rev.innerHTML=`<h3>Incorrect answers (${wrong.length}):</h3>`;wrong.forEach(r=>{rev.innerHTML+=`<div class="review-item"><div class="q">${r.q}</div><div class="ans-row"><span class="tag w">Your answer: ${r.chosen}</span><span class="tag c">Correct: ${r.answer}</span></div></div>`})}
+  // Save to localStorage
+  saveSession(correct,total,pct,pass,cats);
+  updateProgressBadge();
+}
 
-  const wrong = results.filter(r => !r.correct);
-  const rev = document.getElementById('review-list');
-  if (wrong.length === 0) {
-    rev.innerHTML = '<p style="color:#276749;font-weight:600;margin-top:16px;">All questions answered correctly!</p>';
-  } else {
-    rev.innerHTML = `<h3>Incorrect answers (${wrong.length}):</h3>`;
-    wrong.forEach(r => {
-      rev.innerHTML += `<div class="review-item">
-        <div class="q">${r.q}</div>
-        <div class="ans-row">
-          <span class="tag w">Your answer: ${r.chosen}</span>
-          <span class="tag c">Correct: ${r.answer}</span>
+function restartQuiz(){
+  document.getElementById('quiz-results').style.display='none';
+  document.getElementById('quiz-setup').style.display='block';
+}
+
+// ── Progress / localStorage ────────────────────────────────
+const STORAGE_KEY='zh_dog_exam_history';
+
+function saveSession(correct,total,pct,pass,cats){
+  const history=getHistory();
+  const entry={date:new Date().toISOString(),correct,total,pct,pass,cats:{}};
+  Object.entries(cats).forEach(([cat,s])=>{entry.cats[cat]={correct:s.correct,total:s.total}});
+  history.push(entry);
+  // Keep last 50 sessions
+  if(history.length>50)history.shift();
+  localStorage.setItem(STORAGE_KEY,JSON.stringify(history));
+}
+
+function getHistory(){
+  try{return JSON.parse(localStorage.getItem(STORAGE_KEY))||[]}
+  catch{return []}
+}
+
+function clearHistory(){if(confirm('Clear all progress history?')){localStorage.removeItem(STORAGE_KEY);renderProgress()}}
+
+function updateProgressBadge(){
+  const h=getHistory();
+  const btn=document.getElementById('tab-progress');
+  if(h.length>0)btn.innerHTML='📊 Progress <span class="badge">'+h.length+'</span>';
+  else btn.innerHTML='📊 Progress';
+}
+
+function renderProgress(){
+  const history=getHistory();
+  const container=document.getElementById('progress-content');
+  if(history.length===0){
+    container.innerHTML=`<div class="empty"><div class="icon">📊</div><p>No quiz results yet.<br>Complete a quiz to start tracking your progress!</p></div>`;
+    return;
+  }
+  // Summary stats
+  const totalSessions=history.length;
+  const avgPct=Math.round(history.reduce((a,s)=>a+s.pct,0)/totalSessions);
+  const passCount=history.filter(s=>s.pass).length;
+  // Per-topic aggregation
+  const topicAgg={};
+  history.forEach(s=>{
+    Object.entries(s.cats||{}).forEach(([cat,d])=>{
+      if(!topicAgg[cat])topicAgg[cat]={correct:0,total:0};
+      topicAgg[cat].correct+=d.correct;topicAgg[cat].total+=d.total;
+    });
+  });
+  const topicRows=Object.entries(topicAgg).map(([cat,d])=>({cat,pct:Math.round((d.correct/d.total)*100),correct:d.correct,total:d.total})).sort((a,b)=>a.pct-b.pct);
+  const weakTopics=topicRows.filter(t=>t.pct<75);
+
+  let html=`
+  <div class="prog-summary">
+    <div class="prog-card"><div class="num">${totalSessions}</div><div class="lab">Quizzes taken</div></div>
+    <div class="prog-card"><div class="num">${avgPct}%</div><div class="lab">Average score</div></div>
+    <div class="prog-card"><div class="num">${passCount}</div><div class="lab">Passed ✅</div></div>
+  </div>`;
+
+  // Weak topics
+  if(weakTopics.length>0){
+    html+=`<div class="weak-topics"><h3>⚠️ Topics to review (below 75%)</h3>`;
+    weakTopics.forEach(t=>{
+      html+=`<div class="weak-item">
+        <div class="wi-left">❌ ${t.cat}</div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="wi-score">${t.pct}%</span>
+          <button class="btn-study-weak" onclick="goStudy('${t.cat}')">Study →</button>
         </div>
       </div>`;
     });
+    html+=`</div>`;
+  }
+
+  // Performance by topic
+  html+=`<div class="topic-perf"><h3>Performance by Topic</h3>`;
+  topicRows.slice().reverse().forEach(t=>{
+    const color=t.pct>=75?'#48bb78':t.pct>=50?'#ed8936':'#fc8181';
+    html+=`<div class="perf-row">
+      <div class="perf-label">${t.cat}</div>
+      <div class="perf-bar-bg"><div class="perf-bar-fill" style="width:${t.pct}%;background:${color}"></div></div>
+      <div class="perf-pct" style="color:${color}">${t.pct}%</div>
+    </div>`;
+  });
+  html+=`</div>`;
+
+  // History list
+  html+=`<div class="history-list"><h3>Quiz History</h3>`;
+  history.slice().reverse().forEach(s=>{
+    const d=new Date(s.date);
+    const dateStr=d.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
+    html+=`<div class="hist-item">
+      <div>
+        <div style="font-weight:600">${s.correct}/${s.total} correct</div>
+        <div class="hist-date">${dateStr}</div>
+      </div>
+      <span class="hist-score ${s.pass?'hist-pass':'hist-fail'}">${s.pct}%</span>
+    </div>`;
+  });
+  html+=`</div>`;
+  html+=`<button class="btn-clear" onclick="clearHistory()">Clear history</button>`;
+
+  container.innerHTML=html;
+}
+
+function goStudy(topic){
+  // Map topic name to chapter id
+  const map={
+    "A Dog's Senses":"ch1","A Dog's Needs":"ch2","Behavioural Development":"ch3",
+    "Dog Body Language":"ch4","Learning Theory":"ch6","Housing & Daily Life":"ch7",
+    "Law & Legal Requirements":"ch8","Theory Exam & Training":"ch9",
+    "AMICUS & Registration":"ch10","Travelling with Dogs":"ch11"
+  };
+  switchTab('study');
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelector('.tab-btn').classList.add('active');
+  const chId=map[topic];
+  if(chId){
+    const el=document.getElementById(chId);
+    el.classList.add('open');
+    setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),200);
   }
 }
 
-function restart() {
-  document.getElementById('results-screen').style.display = 'none';
-  document.getElementById('start-screen').style.display = 'block';
-}
+// Init
+updateProgressBadge();
 </script>
-
 </body>
 </html>
