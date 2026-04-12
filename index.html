@@ -643,7 +643,7 @@
     <div id="quiz-setup">
       <div class="quiz-header">
         <h2>Practice Quiz</h2>
-        <p>Test your knowledge with questions from all exam topics. Select a topic to focus on, or practise everything at once.</p>
+        <p>Test your knowledge with questions from all exam topics. Select a topic to focus on, or practise everything at once. The real exam has <strong>25 questions in 30 minutes</strong> — you need <strong>20/25 (80%) to pass</strong>.</p>
         <div class="filter-row">
           <label>Topic:</label>
           <button class="filter-btn active" data-topic="all">All Topics</button>
@@ -823,18 +823,18 @@ function showResults(){
   const total=sessionResults.length;
   const correct=sessionResults.filter(r=>r.correct).length;
   const pct=Math.round((correct/total)*100);
-  const pass=pct>=75;
+  const pass=pct>=80;
   const circle=document.getElementById('score-circle');
   circle.className='score-circle '+(pass?'pass':'fail');
   document.getElementById('score-pct').textContent=`${correct}/${total}`;
   document.getElementById('result-title').textContent=pass?'Passed! 🎉':'Not passed';
-  document.getElementById('result-sub').textContent=`${pct}% correct — Minimum passing score: 75%`;
+  document.getElementById('result-sub').textContent=`${pct}% correct — Minimum passing score: 80% (20/25 in real exam)`;
   // Breakdown
   const cats={};
   sessionResults.forEach(r=>{if(!cats[r.category])cats[r.category]={icon:r.icon,correct:0,total:0};cats[r.category].total++;if(r.correct)cats[r.category].correct++});
   const bd=document.getElementById('breakdown');bd.innerHTML='';
   Object.entries(cats).forEach(([cat,s])=>{
-    const p=Math.round((s.correct/s.total)*100);const good=p>=75;
+    const p=Math.round((s.correct/s.total)*100);const good=p>=80;
     bd.innerHTML+=`<div class="breakdown-item"><div class="cat">${s.icon} ${cat}</div><div class="sc ${good?'sc-g':'sc-b'}">${s.correct}/${s.total} (${p}%)</div></div>`;
   });
   // Wrong answers
@@ -899,7 +899,7 @@ function renderProgress(){
     });
   });
   const topicRows=Object.entries(topicAgg).map(([cat,d])=>({cat,pct:Math.round((d.correct/d.total)*100),correct:d.correct,total:d.total})).sort((a,b)=>a.pct-b.pct);
-  const weakTopics=topicRows.filter(t=>t.pct<75);
+  const weakTopics=topicRows.filter(t=>t.pct<80);
 
   let html=`
   <div class="prog-summary">
