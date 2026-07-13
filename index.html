@@ -97,6 +97,12 @@
     .btn-next{padding:10px 22px;background:#2b6cb0;color:white;border:none;border-radius:8px;font-size:0.88rem;font-weight:600;cursor:pointer;transition:background 0.2s;display:none}
     .btn-next:hover{background:#2c5282}
     .btn-next.show{display:block}
+    .btn-check{padding:10px 22px;background:#38a169;color:white;border:none;border-radius:8px;font-size:0.88rem;font-weight:600;cursor:pointer;transition:background 0.2s;display:none}
+    .btn-check.show{display:block}
+    .btn-check:hover{background:#276749}
+    .option-btn.selected{border-color:#2b6cb0;background:#ebf8ff}
+    .option-btn.selected .letter{background:#2b6cb0;color:white}
+    .multi-hint{background:#faf5ff;border:1px solid #d6bcfa;border-radius:6px;padding:8px 12px;font-size:0.82rem;color:#553c9a;margin-bottom:10px;display:none}
     .btn-quit{padding:10px 16px;background:none;color:#a0aec0;border:none;font-size:0.85rem;cursor:pointer}
     .btn-quit:hover{color:#718096}
 
@@ -815,11 +821,13 @@
       </div>
       <div class="question-card">
         <div class="question-text" id="question-text"></div>
+        <div id="multi-hint" class="multi-hint">☑ Select ALL correct answers, then click "Check".</div>
         <div class="options-list" id="options-list"></div>
         <div class="explanation-box" id="explanation-box"></div>
       </div>
       <div class="nav-row">
         <button class="btn-quit" onclick="quitQuiz()">✕ Quit</button>
+        <button class="btn-check" id="btn-check" onclick="checkMultiAnswer()">Check →</button>
         <button class="btn-next" id="btn-next" onclick="nextQuestion()">Next →</button>
       </div>
     </div>
@@ -1072,6 +1080,18 @@ const QUESTIONS = [
   {category:"Bringing a Dog Home",icon:"🏡",q:"Why must dogs be secured in cars, and which method offers the best protection?",options:["It is only required for dogs over 20 kg","A standard harness attached to the seat belt provides the best crash protection","Solid travel crates offer the best crash protection — harnesses and fabric boxes do not provide sufficient protection","Dogs do not need to be secured if the car has airbags"],correct:2,explanation:"By law, dogs must be secured in cars (Road Traffic Act and Animal Protection Ordinance). Crash tests by the Touring Club Switzerland (TCS) show solid travel crates offer the best protection. Harnesses and lightweight fabric boxes do not provide sufficient crash protection."},
   {category:"Bringing a Dog Home",icon:"🏡",q:"What distinguishes show-line dogs from working-line dogs, and which is generally more suitable as a family pet?",options:["Working lines are calmer and better suited to families","There is no meaningful difference between show and working lines","Show lines are generally calmer and more suitable as family dogs; working lines have higher drives, energy and independence","Only show-line dogs are recognised by the FCI"],correct:2,explanation:"Some breeds have separate show lines and working lines (e.g. Golden Retriever, Border Collie, Labrador). Show lines are generally calmer and more suitable as family dogs. Working lines have higher energy, drives and independence, making them more challenging — especially for first-time owners."},
 
+  // ── Topic 2: Learning behaviour – real exam questions ─────
+  {category:"Learning Theory",icon:"🧠",q:"Learning behaviour: which statement is correct?",options:["Dogs only learn when they are puppies, after which no further learning takes place","When teaching things in small steps, a dog's basic training takes far too long because the dog keeps forgetting everything","In every learning process, the things that are learned are also linked to emotions"],correct:2,explanation:"Every learning process is linked to emotions — this is why the emotional state of the dog during training matters so much. Dogs learn throughout their entire lives, not only as puppies. Teaching in small steps is highly effective and leads to lasting learning."},
+  {category:"Learning Theory",icon:"🧠",q:"In the case of ___, a stimulus leads to an increasingly strong response. Particularly with intense or potentially threatening stimuli, ___ can occur very quickly. What word fills both blanks?",options:["sensitisation","habituation","imitation"],correct:0,explanation:"Sensitisation means a stimulus causes an increasingly strong response over time — the opposite of habituation. It can happen very quickly with intense or threatening stimuli. Habituation is when the response to a repeated, harmless stimulus diminishes over time."},
+  {category:"Learning Theory",icon:"🧠",q:"Social learning: which sentence(s) are correct? (Select ALL that apply)",options:["Dogs can learn desired and undesired behaviour through observation","Dogs only learn desired behaviour through imitation","When a dog observes others, it is more likely to try out a behaviour, especially if it sees that it is worthwhile"],correct:[0,2],explanation:"Dogs learn by observation — both desired AND undesired behaviour (option 1 ✓). Option 2 is wrong because dogs also pick up undesired behaviours through imitation. Option 3 is correct: if a dog sees that a behaviour is rewarding for another dog, it is more likely to try it itself."},
+  {category:"Learning Theory",icon:"🧠",q:"When a dog lies down when given a 'down' cue and then gets a treat, this is called ___",options:["ignoring","luring","punishment","reinforcement","pampering"],correct:3,explanation:"This is reinforcement: a behaviour (lying down on cue) is followed by a pleasant consequence (treat), making the behaviour more likely to be repeated. Luring is using food to guide the dog into position before a cue is established. Reinforcement strengthens already-offered behaviour."},
+  {category:"Learning Theory",icon:"🧠",q:"My dog does something I don't want. I grab it by the scruff of its neck and shake it. Is this correct?",options:["Correct — that's what parent animals do and dog owners have to take on this role","Wrong — punishment does not give the dog any information about the desired behaviour","Correct — this type of punishment has a long-lasting effect and is naturally understood by dogs"],correct:1,explanation:"Wrong. Scruff-shaking is a prohibited physical punishment. Furthermore, punishment only tells the dog what NOT to do — it gives no information about what behaviour IS desired. It also frequently causes fear, stress and false associations, and is not a technique used between adult dogs."},
+  {category:"Learning Theory",icon:"🧠",q:"When inflicting a punishment on a dog: which statement is correct?",options:["After being punished, the dog knows what behaviour is desired from it","When inflicting a punishment, the dog learns nothing more than which behaviour may become unpleasant for it","When punishing a dog, false associations are uncommon even when the punishment is strong"],correct:1,explanation:"Punishment only tells the dog that a specific behaviour may have unpleasant consequences — it does not tell the dog what to do instead. False associations are actually very common with punishment (the dog may link the punishment to the wrong thing). This is one of the key reasons why positive reinforcement is preferred."},
+
+  // ── Topic 2 session notes ─────────────────────────────────
+  {category:"Learning Theory",icon:"🧠",q:"Within how long should a reward ideally be given after a desired behaviour for the dog to make the correct association?",options:["Within 5 seconds","Within 3 seconds","Within 1 second","Within 10 seconds"],correct:2,explanation:"Rewards should be given within 1 second of the desired behaviour. Dogs cannot reliably connect a reward that comes later to the correct behaviour. This is why marker signals (clicker or 'Yes!') are so useful — they mark the exact moment of the behaviour, even if the treat takes a moment to deliver."},
+  {category:"Dog Body Language",icon:"🐕",q:"What is a dog's 'individual distance zone'?",options:["The area a dog defends as territory from all other animals","The personal space around a dog — entering it without consent causes stress and can trigger defensive behaviour","The minimum legal distance required between dogs in public","The distance at which a dog can detect sounds from other dogs"],correct:1,explanation:"Every dog has an individual distance zone — personal space it needs to feel comfortable. When another dog or person enters this zone without the dog's consent, it can cause stress and trigger defensive or aggressive behaviour. Respecting a dog's individual zone is a fundamental part of responsible dog handling."},
+
   // ── Real exam questions (from official session) ───────────
   {category:"A Dog's Senses",icon:"👁️",q:"How does a dog's vision differ from that of a human?",options:["Dogs see many more colours than humans","Dogs can see even when it is pitch black","Dogs see objects less than 30–50 cm in front of them as blurry","They see everything further away than 60 cm out of focus"],correct:2,explanation:"Dogs' visual acuity is 3–4 times worse than humans. Objects closer than 30–50 cm appear blurry to them. Dogs cannot see in complete darkness, and they are red-green colourblind — they see fewer colours than humans, not more."},
   {category:"A Dog's Needs",icon:"💤",q:"On walks, it is important to pay attention to your own dog's ___, but also to respect the ___ of the oncoming dog and its owner. What word fills both blanks?",options:["prey drive","needs","appetite","energy level"],correct:1,explanation:"On walks, you must respect the NEEDS of both your own dog and the approaching dog and its owner. Not every dog wants to interact — forcing a greeting disregards the other dog's needs."},
@@ -1137,7 +1157,7 @@ function switchTab(tab){
 function toggleChapter(id){document.getElementById(id).classList.toggle('open')}
 
 // ── Quiz state ─────────────────────────────────────────────
-let questions=[],current=0,sessionResults=[];
+let questions=[],current=0,sessionResults=[],selectedOptions=new Set();
 
 function shuffle(arr){return arr.slice().sort(()=>Math.random()-0.5)}
 
@@ -1165,16 +1185,50 @@ function showQuestion(){
   const el=document.getElementById('explanation-box');el.textContent='';el.classList.remove('show');
   const btnNext=document.getElementById('btn-next');btnNext.classList.remove('show');
   btnNext.textContent=current<questions.length-1?'Next →':'See Results';
+  const isMulti=Array.isArray(q.correct);
+  selectedOptions=new Set();
+  document.getElementById('multi-hint').style.display=isMulti?'block':'none';
+  const btnCheck=document.getElementById('btn-check');
+  isMulti?btnCheck.classList.add('show'):btnCheck.classList.remove('show');
   const list=document.getElementById('options-list');list.innerHTML='';
-  const letters=['A','B','C','D'];
-  const order=shuffle([0,1,2,3].slice(0,q.options.length));
+  const letters=['A','B','C','D','E'];
+  const order=shuffle([...Array(q.options.length).keys()]);
   order.forEach((origIdx,i)=>{
     const btn=document.createElement('button');
     btn.className='option-btn';btn.dataset.orig=origIdx;
     btn.innerHTML=`<span class="letter">${letters[i]}</span><span>${q.options[origIdx]}</span>`;
-    btn.onclick=()=>selectAnswer(btn,origIdx,q);
+    if(isMulti){
+      btn.onclick=()=>{
+        if(btn.disabled)return;
+        if(selectedOptions.has(origIdx)){selectedOptions.delete(origIdx);btn.classList.remove('selected')}
+        else{selectedOptions.add(origIdx);btn.classList.add('selected')}
+      };
+    } else {
+      btn.onclick=()=>selectAnswer(btn,origIdx,q);
+    }
     list.appendChild(btn);
   });
+}
+
+function checkMultiAnswer(){
+  const q=questions[current];
+  const correctSet=new Set(q.correct);
+  document.querySelectorAll('.option-btn').forEach(b=>{
+    b.disabled=true;
+    const idx=parseInt(b.dataset.orig);
+    if(isNaN(idx))return;
+    if(correctSet.has(idx)&&selectedOptions.has(idx))b.classList.add('correct');
+    else if(!correctSet.has(idx)&&selectedOptions.has(idx))b.classList.add('wrong');
+    else if(correctSet.has(idx)&&!selectedOptions.has(idx))b.classList.add('reveal');
+  });
+  const isCorrect=correctSet.size===selectedOptions.size&&[...correctSet].every(v=>selectedOptions.has(v));
+  sessionResults.push({q:q.q,category:q.category,icon:q.icon,correct:isCorrect,
+    chosen:[...selectedOptions].map(i=>q.options[i]).join(' + ')||'(none)',
+    answer:q.correct.map(i=>q.options[i]).join(' + ')});
+  document.getElementById('explanation-box').textContent=q.explanation;
+  document.getElementById('explanation-box').classList.add('show');
+  document.getElementById('btn-next').classList.add('show');
+  document.getElementById('btn-check').classList.remove('show');
 }
 
 function selectAnswer(btn,chosenIdx,q){
