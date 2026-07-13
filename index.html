@@ -65,6 +65,11 @@
     .filter-btn{padding:5px 12px;border-radius:20px;border:1.5px solid #cbd5e0;background:white;font-size:0.8rem;cursor:pointer;transition:all 0.15s}
     .filter-btn.active{background:#2b6cb0;color:white;border-color:#2b6cb0}
     .filter-btn:hover:not(.active){background:#edf2f7}
+    .mode-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;align-items:center}
+    .mode-btn{padding:7px 16px;border-radius:20px;border:2px solid #cbd5e0;background:white;font-size:0.83rem;cursor:pointer;font-weight:600;color:#4a5568;transition:all 0.15s}
+    .mode-btn.active{background:#2b6cb0;color:white;border-color:#2b6cb0}
+    .mode-btn:hover:not(.active){background:#edf2f7;border-color:#a0aec0}
+    .balanced-info{background:#ebf8ff;border:1.5px solid #90cdf4;border-radius:8px;padding:10px 14px;font-size:0.83rem;color:#2c5282;margin-bottom:14px;display:none}
     .btn-start{width:100%;padding:13px;background:#2b6cb0;color:white;border:none;border-radius:8px;font-size:0.95rem;font-weight:600;cursor:pointer;transition:background 0.2s}
     .btn-start:hover{background:#2c5282}
 
@@ -780,12 +785,18 @@
     <div id="quiz-setup">
       <div class="quiz-header">
         <h2>Practice Quiz</h2>
-        <p>Test your knowledge with questions from all exam topics. Select a topic to focus on, or practise everything at once. The real exam has <strong>25 questions in 30 minutes</strong> — you need <strong>20/25 (80%) to pass</strong>.</p>
-        <div class="filter-row">
+        <p>The real exam has <strong>25 questions in 30 minutes</strong> — you need <strong>20/25 (80%) to pass</strong>.</p>
+        <div class="mode-row">
+          <label>Mode:</label>
+          <button class="mode-btn active" onclick="setMode(this,'topic')">📚 Topic practice</button>
+          <button class="mode-btn" onclick="setMode(this,'balanced30')">⚖️ Balanced test · 30 q</button>
+        </div>
+        <div id="balanced-info" class="balanced-info">Picks 2–3 random questions from each of the 12 topics — just like a real exam. Different questions every time.</div>
+        <div id="topic-filter-row" class="filter-row">
           <label>Topic:</label>
           <button class="filter-btn active" data-topic="all">All Topics</button>
         </div>
-        <button class="btn-start" onclick="startQuiz()">Start Quiz</button>
+        <button class="btn-start" id="btn-start-quiz" onclick="startQuiz()">Start Quiz</button>
       </div>
     </div>
     <div id="quiz-active">
@@ -1069,6 +1080,29 @@ Object.entries(topics).forEach(([name,info])=>{
 let selectedTopic='all';
 function selectTopic(btn){document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');selectedTopic=btn.dataset.topic}
 
+let quizMode='topic';
+function setMode(btn,mode){
+  quizMode=mode;
+  document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('topic-filter-row').style.display=mode==='topic'?'flex':'none';
+  document.getElementById('balanced-info').style.display=mode==='balanced30'?'block':'none';
+  document.getElementById('btn-start-quiz').textContent=mode==='balanced30'?'Start Balanced Test (30 questions)':'Start Quiz';
+}
+function getBalanced30(){
+  const cats={};
+  QUESTIONS.forEach(q=>{if(!cats[q.category])cats[q.category]=[];cats[q.category].push(q)});
+  const names=Object.keys(cats);
+  const per=Math.floor(30/names.length);
+  const extra=30-per*names.length;
+  const sel=[];
+  names.forEach((cat,i)=>{
+    const take=per+(i<extra?1:0);
+    sel.push(...shuffle(cats[cat]).slice(0,take));
+  });
+  return sel;
+}
+
 // ── Tab switching ──────────────────────────────────────────
 function switchTab(tab){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
@@ -1087,7 +1121,7 @@ let questions=[],current=0,sessionResults=[];
 function shuffle(arr){return arr.slice().sort(()=>Math.random()-0.5)}
 
 function startQuiz(){
-  const pool=selectedTopic==='all'?QUESTIONS:QUESTIONS.filter(q=>q.category===selectedTopic);
+  const pool=quizMode==='balanced30'?getBalanced30():selectedTopic==='all'?QUESTIONS:QUESTIONS.filter(q=>q.category===selectedTopic);
   questions=shuffle(pool);current=0;sessionResults=[];
   document.getElementById('quiz-setup').style.display='none';
   document.getElementById('quiz-active').style.display='block';
